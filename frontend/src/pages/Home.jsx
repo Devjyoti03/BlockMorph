@@ -25,6 +25,15 @@ import { Context } from '../context/Context';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 
+const web3Ideas = [
+  "Decentralized Voting System",
+  "NFT Marketplace",
+  "Decentralized Social Media Platform",
+  "DAO Management Tool",
+  "Decentralized Finance (DeFi) Lending Platform"
+];
+
+
 const steps = [
   {
     id: 1,
@@ -50,10 +59,13 @@ const gradientAnimation = keyframes`
 
 function Home() {
   const navigate = useNavigate();
+  
   const [inputLink, setInputLink] = useState('');
   const isTest = React.useContext(Context);
   console.log('isTest', isTest);
-
+  const handleIdeaClick = (idea) => {
+    navigate(`/generate/${idea}`);
+  };
   const [loading, setLoading] = useState(false);
 
   // const handleMagicButtonClick = async () => {
@@ -259,6 +271,31 @@ function Home() {
             </Alert>
           </Box>
         )} */}
+
+<Box width="70%" mx="auto" mt={4}>
+  <Typography variant="h4" align="center" mb={2}>
+    Explore Web3 App Ideas
+  </Typography>
+  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+    <thead>
+      <tr style={{ backgroundColor: '#f5f5f5' }}>
+        <th style={{ padding: '10px', textAlign: 'left' }}>Web3 App Ideas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {web3Ideas.map((idea, index) => (
+        <tr
+          key={index}
+          onClick={() => handleIdeaClick(idea)}
+          style={{ cursor: 'pointer', borderBottom: '1px solid #ddd' }}
+        >
+          <td style={{ padding: '10px' }}>{idea}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</Box>
+
       </BottomCard>
     </Box>
   );

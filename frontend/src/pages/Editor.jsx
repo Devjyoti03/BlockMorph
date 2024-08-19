@@ -18,7 +18,7 @@ import YellowButton from "../components/YellowButton";
 import { FaCode, FaDownload } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation,useParams } from "react-router-dom";
 // import { instance } from "../../config/axios";
 import { encode } from "base-64";
 import axios from "axios";
@@ -28,6 +28,8 @@ import { Context } from "../context/Context";
 // import { doc, updateDoc } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
 // import CustomizedDialogs from "../components/LegacyDialog";
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
 
 const tempSteps = [
   {
@@ -87,6 +89,43 @@ function EditorPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [contractAdd, setContractAdd] = useState();
   const [currentStep, setCurrentStep] = useState(0);
+
+  //For Generate Sol Code 
+  const { idea } = useParams();
+  const [additionalFeatures, setAdditionalFeatures] = useState('');
+  const [solidityCode, setSolidityCode] = useState('');
+  console.log(idea);
+  const onTabClick = async () => {
+    try {
+      const genAI = new GoogleGenerativeAI("AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q");
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+      const basePrompt = `Generate only the Solidity code for a smart contract based on the following Web3 idea: ${idea}. Do not include any explanation, comments, or additional text—only return the Solidity code. The code should be error-free and optimized.`;
+      const prompt = `${basePrompt}. Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const generatedCode = await response.text();
+      
+      setSolidityCode(generatedCode);
+      setCode(generatedCode);
+
+      // Example of how you might set summary and contract name
+      setSummary("Generated Solidity contract based on provided features and additional requirements.");
+      setContractName("YourContractName");
+
+      if (tabsLayout[0] === 25) {
+        setTabsLayout([5, 65, 30]);
+        setIsDisabled(false);
+      } else if (tabsLayout[0] === 5) {
+        setTabsLayout([25, 45, 30]);
+        setIsDisabled(true);
+      }
+    } catch (error) {
+      console.error("Error generating Solidity code: ", error);
+    }
+  };
+
 
   // const handleDownloadHardhat = async () => {
   //   setCurrentStep(0);
@@ -249,7 +288,7 @@ function EditorPage() {
                     Approach Selected
                   </Typography>
                   <Typography fontSize={13}>
-                    {state?.selectedOption?.content}
+                  {decodeURIComponent(idea)}
                   </Typography>
                 </>
               )}
@@ -291,7 +330,7 @@ function EditorPage() {
             {tabsLayout[0] === 25 ? (
               <Box mt={1}>
                 <GradientButton
-                  // onClick={onTabClick}
+                  onClick={onTabClick}
                   text="Generate Code"
                   icon={<FaMagic />}
                   fullWidth

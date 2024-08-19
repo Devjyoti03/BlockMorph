@@ -44,8 +44,15 @@ const router = createBrowserRouter([
         path: 'options',
         element: <MagicOptions />,
       },
+      {
+        path: 'generate/:idea', // Dynamic route
+        element: <Editor />,
+      },
     ],
   },
+
+
+
 //   {
 //     path: '/login',
 //     element: <Login />,

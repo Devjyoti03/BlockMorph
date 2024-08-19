@@ -1,7 +1,24 @@
-import { Box, Typography } from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { ethers } from 'ethers';
 
 function Navbar() {
+  const [account, setAccount] = useState(null);
+
+  const connectWallet = async () => {
+    if (window.ethereum) {
+      try {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+      } catch (error) {
+        console.error("Error connecting to MetaMask:", error);
+      }
+    } else {
+      console.log("MetaMask not found");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -38,10 +55,22 @@ function Navbar() {
         </Typography>
       </Box>
       <Box display="flex" alignItems="center" justifyContent="center">
-        <img src="./metamask-logo.png" alt="Credit Icon" style={{width: '50px'}} />
-        <Typography variant="body" px={1} style={{color: 'grey'}}>
-          chappa maar
-        </Typography>
+        {account ? (
+          <Typography variant="body" px={1} style={{color: 'grey'}}>
+            {account.slice(0, 6)}...{account.slice(-4)}
+          </Typography>
+        ) : (
+          <Button
+            onClick={connectWallet}
+            variant="contained"
+            style={{
+              backgroundColor: 'orange',
+              color: 'black',
+            }}
+          >
+            Connect Wallet
+          </Button>
+        )}
       </Box>
     </Box>
   );
