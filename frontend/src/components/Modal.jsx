@@ -21,8 +21,6 @@ function Modal() {
         justifyContent: 'center',
         width: '40%',
         height: '70%',
-        display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
         zIndex: '999',
       }}

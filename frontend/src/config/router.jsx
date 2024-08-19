@@ -4,7 +4,7 @@ import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Navbar from '../components/Navbar';
 import Editor from '../pages/Editor';
-// import Doc from '../pages/Doc';
+import Doc from '../pages/Doc';
 import MagicOptions from '../pages/Magic';
 // import Login from '../pages/Login';
 // import AuthWrapper from '../components/AuthWrapper';
@@ -36,10 +36,10 @@ const router = createBrowserRouter([
         path: 'editor',
         element: <Editor />,
       },
-    //   {
-    //     path: 'doc',
-    //     element: <Doc />,
-    //   },
+      {
+        path: 'doc',
+        element: <Doc />,
+      },
       {
         path: 'options',
         element: <MagicOptions />,

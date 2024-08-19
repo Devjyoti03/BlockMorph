@@ -27,7 +27,7 @@ import axios from "axios";
 import { Context } from "../context/Context";
 // import { doc, updateDoc } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
-// import CustomizedDialogs from "../components/LegacyDialog";
+import CustomizedDialogs from "../components/LegacyDialog";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 
@@ -574,7 +574,7 @@ function EditorPage() {
           </Box>
         </Box>
       </Box>
-      {/* <CustomizedDialogs
+      <CustomizedDialogs
         steps={[
           "Scaffolding hardhat",
           "Inserting your contract",
@@ -586,7 +586,7 @@ function EditorPage() {
         setOpen={setLoading}
         open={loading}
         stepCount={currentStep}
-      /> */}
+      />
     </>
   );
 }
