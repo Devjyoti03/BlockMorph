@@ -100,8 +100,8 @@ function EditorPage() {
       const genAI = new GoogleGenerativeAI("AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q");
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const basePrompt = `Generate only the Solidity code for a smart contract based on the following Web3 idea: ${idea}. Do not include any explanation, comments, or additional text—only return the Solidity code. The code should be error-free and optimized.`;
-      const prompt = `${basePrompt}. Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
+      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
+      const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
 
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -110,9 +110,14 @@ function EditorPage() {
       setSolidityCode(generatedCode);
       setCode(generatedCode);
 
-      // Example of how you might set summary and contract name
-      setSummary("Generated Solidity contract based on provided features and additional requirements.");
-      setContractName("YourContractName");
+      // Prompt to generate a summary of the generated Solidity code
+  const summaryPrompt = `Summarize the key features and functions of the following Solidity smart contract code in a concise manner. Code: ${generatedCode}`;
+  const summaryResult = await model.generateContent(summaryPrompt);
+  const summaryResponse = await summaryResult.response;
+  const generatedSummary = await summaryResponse.text();
+
+  setSummary(generatedSummary);
+  setContractName("YourContractName");
 
       if (tabsLayout[0] === 25) {
         setTabsLayout([5, 65, 30]);
@@ -516,7 +521,7 @@ function EditorPage() {
               <Typography fontSize={18} fontWeight="600">
                 Contract Summary
               </Typography>
-              <Typography fontSize={13}>{summary}</Typography>
+              <Typography fontSize={13}>{summary || "Generated Solidity contract based on provided features and additional requirements."}</Typography>
             </Box>
             <Modal
               open={isModalOpen}
