@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, send_file, render_template
 import os
+import json
 import uuid
 import shutil
 from flask_cors import CORS
@@ -9,17 +10,30 @@ from compile_solidity import compile_solidity
 from test_contract import test_contract
 from scan_contract import scan_contract
 from deploy_contract import deploy_contract
-
+from get_options import process_url
 load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
+
 # Directory to store user session files
 SESSION_DIR = "user_sessions"
 
 if not os.path.exists(SESSION_DIR):
     os.makedirs(SESSION_DIR)
 
+
+
+@app.route('/getOptions', methods=["POST"])
+def getOptions():
+    user_link = request.json['url']
+    # user_acc = request.json["meta_acc"]
+    print("trying")
+    try:
+        result = process_url(user_link)
+        return jsonify({'success':True,'data':result})
+    except Exception as e:
+        return jsonify({'success':False})
 
 
 @app.route('/process_link', methods=['POST'])
