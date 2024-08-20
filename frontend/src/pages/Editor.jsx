@@ -131,6 +131,10 @@ function EditorPage() {
     }
   };
 
+  const deployContract = () => {
+    console.log(code); // Print the editor value
+    // Deploy contract Codee... Time lagbe korte
+  };
 
   // const handleDownloadHardhat = async () => {
   //   setCurrentStep(0);
@@ -567,7 +571,7 @@ function EditorPage() {
             </Modal>
             <GradientButton
               icon={<GrDeploy />}
-              // onClick={deployContract}
+              onClick={deployContract}
               text="Magic Deploy"
               fullWidth
               isDisabled={isDisabled}
