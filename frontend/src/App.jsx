@@ -1,8 +1,8 @@
-import { RouterProvider } from 'react-router-dom';
-import router from './config/router';
-import StyleThemeProvider from './theme/ThemeProvider';
-import { SnackbarProvider } from 'notistack';
-import { Context } from './context/Context';
+import { RouterProvider } from "react-router-dom";
+import router from "./config/router";
+import StyleThemeProvider from "./theme/ThemeProvider";
+import { SnackbarProvider } from "notistack";
+import { Context } from "./context/Context";
 
 // const appID = 'xar_test_fe9df73ff0f3ca7b5300b27720265695728c1d82';
 
@@ -20,27 +20,13 @@ import { Context } from './context/Context';
 function App() {
   return (
     <>
-      {/* <ProvideAuth provider={arcanaProvider}> */}
-      {/* <AppContext.Provider
-        value={{
-          loading: false,
-          isLoggedIn: true,
-          user: {
-            address: '0x0Dd7D7Ad21d15A999dcc7218E7Df3F25700e696f',
-            name: 'Vinay Kanse',
-            authProvider: 'email',
-            email: 'vinay@gmail.com',
-            publicKey: '0x0Dd7D7Ad21d15A999dcc7218E7Df3F25700e696f',
-          },
-        }}
-      > */}
-        <Context.Provider value={true}>
-          <StyleThemeProvider>
-            <SnackbarProvider maxSnack={3} autoHideDuration={1000}>
-              <RouterProvider router={router} />
-            </SnackbarProvider>
-          </StyleThemeProvider>
-        </Context.Provider>
+      <Context.Provider value={true}>
+        <StyleThemeProvider>
+          <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+            <RouterProvider router={router} />
+          </SnackbarProvider>
+        </StyleThemeProvider>
+      </Context.Provider>
       {/* </AppContext.Provider> */}
       {/* </ProvideAuth> */}
     </>
