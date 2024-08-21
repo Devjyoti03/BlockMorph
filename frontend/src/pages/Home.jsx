@@ -58,7 +58,7 @@ const gradientAnimation = keyframes`
 
 function Home() {
   const navigate = useNavigate();
-  // const defaultLink = document.querySelector("rt").value;
+
   const [inputLink, setInputLink] = useState("");
   const isTest = React.useContext(Context);
   console.log("isTest", isTest);
@@ -127,6 +127,7 @@ function Home() {
           alt="Web2 --> Web3"
         />
         <LinkInput
+          id="dynamicInput"
           defaultValue={isTest ? inputLink : ""}
           isDisabled={false}
           value={inputLink}
