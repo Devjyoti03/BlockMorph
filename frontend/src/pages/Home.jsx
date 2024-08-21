@@ -107,176 +107,226 @@ function Home() {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="space-between"
-      alignItems="center"
-      flexDirection="column"
-      width="80%"
-      mx="auto"
-      height="calc(100vh - 4rem)"
-    >
-      <Box width="70%" mx="auto" pt={4} mb={3}>
-        <img
-          src="home.svg"
-          style={{
-            display: "block",
-            width: "300px",
-            margin: "auto",
-          }}
-          alt="Web2 --> Web3"
-        />
-        <LinkInput
-          id="dynamicInput"
-          defaultValue={isTest ? inputLink : ""}
-          isDisabled={false}
-          value={inputLink}
-          onChange={(e) => setInputLink(e.target.value)}
-        />
-        <Typography align="center" variant="body1">
-          Unfolding the path to Web3 in a single click!!!
-        </Typography>
-      </Box>
-      <BottomCard
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          width: "95%",
-          borderRadius: "2rem",
-          paddingTop: "0.5rem",
-          paddingBottom: "1rem",
-        }}
+    <div className="blue__gradient">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        flexDirection="column"
+        width="100%"
+        mx="auto"
+        height="calc(100vh - 4rem)"
       >
-        <CardContent
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          flexDirection="row"
+          width="100%"
+          mx="auto"
+          height="calc(100vh - 4rem)"
+          px={4}
+          pt={5}
+          pb={10}
+        >
+          <Box
+            display="flex"
+            flexDirection="column"
+            className="gradient-bg-transactions"
+            px={10}
+            py={3}
+            borderRadius={4}
+          >
+            <Typography variant="h2" style={{ marginBottom: "8px" }}>
+              Unfolding the
+            </Typography>
+            <Typography
+              align="center"
+              variant="h1"
+              className="text-gradient-1"
+              style={{ marginBottom: "8px" }}
+            >
+              Transition
+            </Typography>
+            <Typography variant="h3" className="text-gradient">
+              from Web2
+              <img
+                style={{ verticalAlign: "middle", marginLeft: "14px" }}
+                src="crv.svg"
+                alt="bal"
+              />
+            </Typography>
+            <Typography
+              align="right"
+              className="text-gradient"
+              variant="h2"
+              style={{ marginBottom: "20px" }}
+            >
+              to Web3
+            </Typography>
+            <Typography align="center" variant="h3" className="text-gradient-2">
+              in a Single Click!!!
+            </Typography>
+          </Box>
+          <img
+            src="new.png"
+            style={{
+              display: "block",
+              width: "600px",
+            }}
+            alt="Web2 --> Web3"
+          />
+        </Box>
+        <BottomCard
           sx={{
             display: "flex",
-            justifyContent: "",
+            justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            width: "100%",
-            height: "26rem",
+            width: "95%",
             borderRadius: "2rem",
-            transition: "opacity 1s ease-in-out", // Add a smooth transition effect
+            paddingTop: "0.5rem",
+            paddingBottom: "1rem",
           }}
         >
-          {loading ? (
-            <>
-              <Typography variant="h6" mb={2} fontWeight={700} align="center">
-                Generating ideas!
-              </Typography>
-              <LinearProgress
-                sx={{ width: "30%", borderRadius: "1rem", mt: 2 }}
-              />
-            </>
-          ) : (
-            <>
-              <Stepper
-                activeStep={-1}
-                orientation="vertical"
-                sx={{
-                  color: "white",
-                  overflow: "auto",
-                }}
-              >
-                {steps.map(({ id, text }) => {
-                  return (
-                    <Step key={id}>
-                      <StepLabel color="white">
-                        <Typography variant="h6" color="white">
-                          {text}
-                        </Typography>
-                      </StepLabel>
-                    </Step>
-                  );
-                })}
-              </Stepper>
-              <CardActions
-                sx={{
-                  mt: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 1,
-                  width: "100%",
-                }}
-              >
-                <GradientButton
-                  icon={<FaMagic />}
-                  text="Start the Magic!"
-                  onClick={handleMagicButtonClick}
-                  disabled={loading}
+          <CardContent
+            className="gradient-bg-services"
+            sx={{
+              display: "flex",
+              justifyContent: "",
+              alignItems: "center",
+              flexDirection: "column",
+              width: "100%",
+              height: "32rem",
+              borderRadius: "2rem",
+              transition: "opacity 1s ease-in-out", // Add a smooth transition effect
+            }}
+          >
+            <LinkInput
+              defaultValue={isTest ? inputLink : ""}
+              isDisabled={false}
+              onChange={(e) => setInputLink(e.target.value)}
+            />
+            {loading ? (
+              <>
+                <Typography variant="h6" mb={2} fontWeight={700} align="center">
+                  Generating ideas!
+                </Typography>
+                <LinearProgress
+                  sx={{ width: "30%", borderRadius: "1rem", mt: 2 }}
                 />
-
-                <Box
+              </>
+            ) : (
+              <>
+                <Stepper
+                  activeStep={-1}
+                  orientation="vertical"
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "60%",
-                    alignItems: "center",
-                    gap: 1,
+                    color: "white",
+                    overflow: "auto",
                   }}
                 >
+                  {steps.map(({ id, text }) => {
+                    return (
+                      <Step key={id}>
+                        <StepLabel color="white">
+                          <Typography variant="h6" color="white">
+                            {text}
+                          </Typography>
+                        </StepLabel>
+                      </Step>
+                    );
+                  })}
+                </Stepper>
+                <CardActions
+                  sx={{
+                    mt: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                    width: "100%",
+                  }}
+                >
+                  <GradientButton
+                    icon={<FaMagic />}
+                    text="Start the Magic!"
+                    onClick={handleMagicButtonClick}
+                    disabled={loading}
+                  />
+
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: "coloumn",
-                      width: "100%",
+                      flexDirection: "column",
+                      width: "60%",
                       alignItems: "center",
-                      justifyContent: "center",
-                      margin: "auto",
+                      gap: 1,
                     }}
                   >
-                    <Divider
-                      sx={{ bgcolor: "white", width: "40%", height: "1px" }}
-                    ></Divider>
-                    <Typography variant="body2" fontSize={18} px={1}>
-                      or
-                    </Typography>
-                    <Divider
-                      sx={{ bgcolor: "white", width: "40%", height: "1px" }}
-                    ></Divider>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "coloumn",
+                        width: "100%",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        margin: "auto",
+                      }}
+                    >
+                      <Divider
+                        sx={{ bgcolor: "white", width: "40%", height: "1px" }}
+                      ></Divider>
+                      <Typography variant="body2" fontSize={18} px={1}>
+                        or
+                      </Typography>
+                      <Divider
+                        sx={{ bgcolor: "white", width: "40%", height: "1px" }}
+                      ></Divider>
+                    </Box>
+                    <LightButton
+                      component={Link}
+                      to={`/editor`}
+                      text="Open in code editor"
+                      icon={<FaCode />}
+                      fullWidth
+                    />
                   </Box>
-                  <LightButton
-                    component={Link}
-                    to={`/editor`}
-                    text="Open in code editor"
-                    icon={<FaCode />}
-                    fullWidth
-                  />
-                </Box>
-              </CardActions>
-            </>
-          )}
-        </CardContent>
+                </CardActions>
+              </>
+            )}
+          </CardContent>
 
-        <Box width="70%" mx="auto" mt={4}>
-          <Typography variant="h4" align="center" mb={2}>
-            Explore Web3 App Ideas
-          </Typography>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead>
-              <tr style={{ backgroundColor: "#f5f5f5" }}>
-                <th style={{ padding: "10px", textAlign: "left" }}>
-                  Web3 App Ideas
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {web3Ideas.map((idea, index) => (
-                <tr
-                  key={index}
-                  onClick={() => handleIdeaClick(idea)}
-                  style={{ cursor: "pointer", borderBottom: "1px solid #ddd" }}
-                >
-                  <td style={{ padding: "10px" }}>{idea}</td>
+          <Box width="70%" mx="auto" mt={4}>
+            <Typography variant="h4" align="center" mb={2}>
+              Explore Web3 App Ideas
+            </Typography>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead>
+                <tr style={{ backgroundColor: "#f5f5f5" }}>
+                  <th style={{ padding: "10px", textAlign: "left" }}>
+                    Web3 App Ideas
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </Box>
-      </BottomCard>
-    </Box>
+              </thead>
+              <tbody>
+                {web3Ideas.map((idea, index) => (
+                  <tr
+                    key={index}
+                    onClick={() => handleIdeaClick(idea)}
+                    style={{
+                      cursor: "pointer",
+                      borderBottom: "1px solid #ddd",
+                    }}
+                  >
+                    <td style={{ padding: "10px" }}>{idea}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Box>
+        </BottomCard>
+      </Box>
+    </div>
   );
 }
 

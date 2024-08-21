@@ -20,15 +20,17 @@ function Navbar() {
   };
 
   return (
+    <div className='bg-gray-gradient'>
     <Box
       sx={{
         borderBottom: '1px solid #2e3c51',
-        background: 'black',
+        // background: 'black',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
         height: '4rem',
         px: 3,
+        zIndex: '10'
       }}
     >
       <Box
@@ -73,6 +75,7 @@ function Navbar() {
         )}
       </Box>
     </Box>
+    </div>
   );
 }
 
