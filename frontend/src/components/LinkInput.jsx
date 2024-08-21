@@ -17,7 +17,7 @@ function LinkInput({ isDisabled, defaultValue, ...rest }) {
     localStorage.setItem('savedLink', newLink);
   };
   return (
-    <FormControl fullWidth sx={{ m: 1, bgcolor: 'transparent' }} {...rest}>
+    <FormControl sx={{ m: 1, width: '75%', bgcolor: 'transparent' }} {...rest}>
       <TextField
         value={inputLink}
         placeholder="Enter your website link here..."
@@ -46,7 +46,7 @@ function LinkInput({ isDisabled, defaultValue, ...rest }) {
           sx: {
             borderRadius: 0.6,
             background: 'rgba(43, 36, 60, 0.90)',
-            boxShadow: '0px 0px 60px 0px rgba(236, 39, 182, 0.25)',
+            boxShadow: '0px 0px 60px 0px rgba(13, 200, 192, 0.25)',
             '& .MuiInputBase-input.Mui-disabled': {
               WebkitTextFillColor: 'rgba(255, 208, 242, 0.60)',
             },

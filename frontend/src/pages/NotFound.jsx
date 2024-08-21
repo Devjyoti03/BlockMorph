@@ -4,7 +4,6 @@ export default function NotFound() {
   return (
     <Box
       display="flex"
-      flexDirection="column"
       alignItems="center"
       justifyContent="center"
       width="100vw"

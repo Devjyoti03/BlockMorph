@@ -95,35 +95,56 @@ function Home() {
   // };
 
   return (
+    <div className='blue__gradient'>
     <Box
       display="flex"
       justifyContent="space-between"
       alignItems="center"
       flexDirection="column"
-      width="80%"
+      width="100%"
       mx="auto"
       height="calc(100vh - 4rem)"
     >
-      <Box width="70%" mx="auto" pt={4} mb={3}>
+      <Box 
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      flexDirection="row"
+      width="100%"
+      mx="auto"
+      height="calc(100vh - 4rem)"
+      px={4}
+      pt={5} pb={10}>
+        <Box display='flex' flexDirection='column' className="gradient-bg-transactions" px={10} py={3} borderRadius={4}>
+          <Typography variant="h2" style={{ marginBottom: '8px' }}>
+            Unfolding the
+          </Typography>
+          <Typography align="center" variant="h1" className='text-gradient-1' style={{ marginBottom: '8px' }}>
+            Transition
+          </Typography>
+          <Typography variant="h3" className='text-gradient'>
+            from Web2 
+            <img style={{ verticalAlign: 'middle', marginLeft: '14px' }}  src="crv.svg" alt="bal"/>
+            </Typography>
+          <Typography align="right" className='text-gradient' variant="h2" style={{ marginBottom: '20px' }}>
+            to Web3
+          </Typography>
+          <Typography align='center' variant="h3" className='text-gradient-2'>
+            in a Single Click!!!
+          </Typography>
+        </Box>
         <img
-          src="home.svg"
+          src="new.png"
           style={{
             display: 'block',
-            width: '300px',
-            margin: 'auto',
+            width: '600px',
           }}
           alt="Web2 --> Web3"
         />
-        <LinkInput
-          defaultValue={isTest ? inputLink : ''}
-          isDisabled={false}
-          onChange={(e) => setInputLink(e.target.value)}
-        />
-        <Typography align="center" variant="body1">
-          Unfolding the path to Web3 in a single click!!!
-        </Typography>
+        
+        
       </Box>
-      <BottomCard
+      <BottomCard 
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -135,18 +156,24 @@ function Home() {
           paddingBottom: '1rem',
         }}
       >
-        <CardContent
+        
+        <CardContent className='gradient-bg-services'
           sx={{
             display: 'flex',
             justifyContent: '',
             alignItems: 'center',
             flexDirection: 'column',
             width: '100%',
-            height: '26rem',
+            height: '32rem',
             borderRadius: '2rem',
             transition: 'opacity 1s ease-in-out', // Add a smooth transition effect
           }}
         >
+          <LinkInput
+          defaultValue={isTest ? inputLink : ''}
+          isDisabled={false}
+          onChange={(e) => setInputLink(e.target.value)}
+        />
           {loading ? (
             <>
               <Typography variant="h6" mb={2} fontWeight={700} align="center">
@@ -247,30 +274,7 @@ function Home() {
             </>
           )}
         </CardContent>
-        {/* {isTest && (
-          <Box>
-            <Alert
-              severity="info"
-              sx={{
-                position: 'fixed',
-                bottom: 0,
-                right: 0,
-                maxWidth: '500px',
-                mr: 2,
-                mb: 2,
-                backgroundColor: 'rgba(7, 19, 23, 0.70)',
-                color: '#AEDBEF',
-              }}
-            >
-              <AlertTitle>
-                Hey, you will only recieve cached responses from a previous
-                query.
-              </AlertTitle>
-              If you want to get complete access just hit me up on Telegram -
-              https://t.me/pettiboy and I will give you full access
-            </Alert>
-          </Box>
-        )} */}
+      
 
 <Box width="70%" mx="auto" mt={4}>
   <Typography variant="h4" align="center" mb={2}>
@@ -298,6 +302,7 @@ function Home() {
 
       </BottomCard>
     </Box>
+    </div>
   );
 }
 

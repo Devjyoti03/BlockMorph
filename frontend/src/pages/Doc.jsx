@@ -305,14 +305,15 @@ const contract = new Contract(${contractAddress}, ${contractName}.abi, signer);`
 //   }, [user]);
 
   return (
-    <Box
+    // <div className="gradient-bg-welcome"></div>
+    <Box 
       display="flex"
       justifyContent="space-between"
       mx="auto"
       height="calc(100vh - 4rem)"
       padding={2}
     >
-      <Box
+      <Box className='gradient-bg-welcome'
         sx={{
           display: 'flex',
           justifyContent: 'center',
@@ -322,7 +323,7 @@ const contract = new Contract(${contractAddress}, ${contractName}.abi, signer);`
           height: '100%',
           borderRadius: '1rem',
           border: '1px solid rgba(255, 255, 255, 0.20)',
-          background: 'linear-gradient(180deg, #2B243C 0%, #0B031E 100%)',
+          // background: 'linear-gradient(180deg, #2B243C 0%, #0B031E 100%)',
         }}
       >
         <Box

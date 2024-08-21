@@ -36,7 +36,7 @@ function App() {
       > */}
         <Context.Provider value={true}>
           <StyleThemeProvider>
-            <SnackbarProvider maxSnack={3} autoHideDuration={5000}>
+            <SnackbarProvider maxSnack={3} autoHideDuration={1000}>
               <RouterProvider router={router} />
             </SnackbarProvider>
           </StyleThemeProvider>

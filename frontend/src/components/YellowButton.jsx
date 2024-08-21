@@ -9,17 +9,17 @@ function YellowButton({ text, isDisabled, icon, ...rest }) {
       sx={{
         borderRadius: 0.5,
         border: '2px solid #2E3C51',
-        background: '#F5DC22',
+        background: 'cyan',
         color: 'black',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         '&:hover': {
-          background: '#F5DC22',
+          background: 'darkblue',
         },
         "&.Mui-disabled": {
-          background: "#F5DC22",
-          color: "grey"
+          background: "cyan",
+          color: "black"
         }
       }}
       variant="contained"
