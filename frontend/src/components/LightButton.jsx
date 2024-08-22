@@ -8,12 +8,31 @@ function LightButton({ text, icon, ...rest }) {
           <Box
             sx={{
               borderRadius: "8px",
-              background:
-                "var(--brand-mix, conic-gradient(from 180deg at 50% 50%, #B52BBA 4.666563235223293deg, #A12CBC 23.647727966308594deg, #8C2EBE 44.85525995492935deg, #792FBF 72.45651304721832deg, #6C30C0 82.50000178813934deg, #4B32C3 127.99007892608643deg, #5831C2 160.968976020813deg, #6330C1 178.45529437065125deg, #742FC0 189.47770357131958deg, #8D2DBE 202.95226335525513deg, #A62CBC 230.65982580184937deg, #B92ABA 251.35178089141846deg, #D029B8 276.4414644241333deg, #EC27B6 306.45145654678345deg, #C729B9 331.67617321014404deg))",
+       background: `var(--brand-mix, conic-gradient(
+      from 180deg at 50% 50%,
+      #0047ab 4.67deg,     /* Dark Blue */
+      #005bb5 23.65deg,    /* Slightly Lighter Blue */
+      #0073e6 44.85deg,    /* Bright Blue */
+      #0099ff 72.46deg,    /* Sky Blue */
+      #00bfff 82.50deg,    /* Light Sky Blue */
+      #00e5ff 127.99deg,   /* Light Cyan */
+      #00ffff 160.97deg,   /* Cyan */
+      #1affff 178.46deg,   /* Very Light Cyan */
+      #33ccff 189.48deg,   /* Light Blue */
+      #3399ff 202.95deg,   /* Strong Blue */
+      #3366ff 230.66deg,   /* Rich Blue */
+      #3333ff 251.35deg,   /* Deep Blue */
+      #2929ff 276.44deg,   /* Deeper Blue */
+      #1f1fff 306.45deg,   /* Deeper Blue */
+      #1a1aff 331.68deg    /* Deepest Blue */
+    )
+  )`,
               px: 1,
             }}
           >
-            {icon}
+            <div style={{ color: 'black' }}>
+              {icon}
+            </div>
           </Box>
         ) || null
       }
@@ -21,11 +40,15 @@ function LightButton({ text, icon, ...rest }) {
       sx={{
         borderRadius: 1,
         border: "2px solid #2E3C51",
-        background: "#2B243C",
-        boxShadow: "0px 0px 13px 0px #2B243C",
+        background: 'rgba(18, 65, 105, 0.8)',
+        boxShadow: "0px 0px 13px 0px darkblue",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
+        '&:hover': {
+              textShadow: '0px 0px 10px lightpink',
+              background: 'darkblue',
+            },
       }}
       variant="contained"
       {...rest}

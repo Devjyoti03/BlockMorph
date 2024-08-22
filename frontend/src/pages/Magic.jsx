@@ -20,15 +20,11 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 function MagicOptions() {
   const navigate = useNavigate();
   const { state } = useLocation();
-  console.log(state);
-  const handleOptionOnClick = (data) => {
-    console.log(data);
-    navigate('/editor', {
-      state: {
-        selectedOption: data,
-        url: state?.url,
-      },
-    });
+  // console.log(state);
+  const { options, summary } = state;
+
+  const handleIdeaClick = (selectedOption) => {
+    navigate(`/generate/${selectedOption}`);
   };
 
   return (
@@ -51,8 +47,13 @@ function MagicOptions() {
           }}
           alt="Web2 --> Web3"
         />
+        <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center" >
         <LinkInput isDisabled defaultValue={state?.url} />
-        <Typography
+        </Box>
+        <Typography className='text-gradient-2'
           align="center"
           sx={{
             textAlign: 'center',
@@ -61,15 +62,15 @@ function MagicOptions() {
             textDecoration: 'none',
             transition: 'all 0.3s ease-in-out', // Adding transition for a smooth effect
             '&:hover': {
-              textShadow: '0px 0px 10px #FFF',
+              textShadow: '0px 0px 10px lightpink',
             },
           }}
-          variant="body1"
+          variant="h3"
           component={Link}
           to="/"
           fontWeight={600}
         >
-          Lets start again?
+          Rock & Roll as <br/> The Transition is on!!
         </Typography>
       </Box>
       <BottomCard
@@ -94,10 +95,29 @@ function MagicOptions() {
             overflowY: 'auto',
           }}
         >
-          <Typography variant="h5" mb={2} fontWeight={600}>
+          <Typography className='text-gradient-1'
+          align="center"
+          sx={{
+            textAlign: 'center',
+            display: 'flex',
+            color: 'inherit',
+            textDecoration: 'none',
+            transition: 'all 0.3s ease-in-out', // Adding transition for a smooth effect
+            // '&:hover': {
+              // textShadow: '0px 0px 10px lightpink',
+            // },
+          }}
+          variant="h3"
+          component={Link}
+          to="/"
+          fontWeight={600}
+        >
+          Rock & Roll as The Transition is on!!
+        </Typography>
+          {/* <Typography variant="h5" mb={2} fontWeight={600}>
             Current approach
-          </Typography>
-          <Box
+          </Typography> */}
+          {/* <Box
             sx={{
               borderRadius: 2,
               background: 'rgba(255, 255, 255, 0.10)',
@@ -114,18 +134,18 @@ function MagicOptions() {
             >
               {state?.summary}
             </Typography>
-          </Box>
+          </Box> */}
           <Box>
-            <Typography variant="h5" mt={2} fontWeight={600}>
-              Generated ideas
+            <Typography  variant="h5" mt={2} fontWeight={600} sx={{ textDecoration: 'underline' }}>
+              Generated ideas:
             </Typography>
             <List
               sx={{
                 overflowY: 'scroll',
-                height: 240,
+                height: 320,
               }}
             >
-              {state?.options?.map((option, i) => {
+              {options?.map((option, i) => {
                 return (
                   <ListItem
                     key={i}
@@ -136,7 +156,7 @@ function MagicOptions() {
                       textAlign: 'center',
                       my: 1,
                     }}
-                    onClick={() => handleOptionOnClick(option)}
+                    onClick={() => handleIdeaClick(summary[i])}
                   >
                     <ListItemButton
                       sx={{
@@ -178,17 +198,17 @@ function MagicOptions() {
                         primary={
                           <>
                             <Typography variant="body1" fontWeight={600}>
-                              {option?.heading}:
+                              {option}:
                             </Typography>
                             <Typography variant="body2" fontWeight={400}>
-                              {option?.content}
+                              {summary[i]}
                             </Typography>
-                            <Typography variant="body1" fontWeight={600} mt={1}>
+                            {/* <Typography variant="body1" fontWeight={600} mt={1}>
                               Relevence:
                             </Typography>
                             <Typography variant="body2" fontWeight={400}>
                               {option?.relevence}
-                            </Typography>
+                            </Typography> */}
                           </>
                         }
                         fontWeight={400}

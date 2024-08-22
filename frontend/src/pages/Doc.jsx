@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, ListItem, Typography, Divider, Button } from "@mui/material";
+import { Box, ListItem, Typography, Divider, Button, LinearProgress } from "@mui/material";
 import { Code, shadesOfPurple, CopyBlock } from "react-code-blocks";
 import { HashLink } from "react-router-hash-link";
 import { FaDownload, FaClipboardList } from "react-icons/fa";
@@ -7,7 +7,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { IoLogoJavascript } from "react-icons/io5";
 import { FaReact } from "react-icons/fa";
-
+import { styled } from '@mui/system';
 import { FaPython } from "react-icons/fa";
 import { useState } from "react";
 // import axios from 'axios';
@@ -179,6 +179,7 @@ function Doc() {
     "reactjs",
     "python",
   ]);
+  const [loading,setLoading]=useState(true)
   //   const [languageIdx, setLanguageIdx] = useState(0);
   //   const { user } = useContext(AppContext);
 
@@ -207,12 +208,13 @@ function Doc() {
         });
 
         if (i < languages.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       } catch (error) {
         console.error("Error fetching response:", error);
       }
     }
+    setLoading(false)
   };
 
   React.useEffect(() => {
@@ -220,7 +222,9 @@ function Doc() {
     // if(response.length===3) localStorage.setItem("data",JSON.stringify(response))
   }, []);
 
-  React.useEffect(() => console.log("Response", response), [response]);
+  React.useEffect(() => {
+    console.log("Response", response)
+  }, [response]);
 
   React.useEffect(() => {
     if (response.length > 0) {
@@ -350,15 +354,58 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
   //     fetchData();
   //   }, [user]);
 
+const StyledListItem = styled(ListItem)(({ theme }) => ({
+  // backgroundColor: 'cyan',
+  borderRadius: '8px',
+  padding: '15px',
+  marginBottom: '10px',
+  transition: 'all 0.3s ease',
+  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)',
+  '&:hover': {
+    backgroundColor: 'darkblue',
+    // backdropFilter: 'blur(20px)',
+    boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.2)',
+
+  },
+}));
+
+// Styled Typography for text
+const StyledTypography = styled(Typography)(({ theme }) => ({
+  color: 'white',
+  textDecoration: 'none',
+  '&:hover': {
+    color: "white",
+    textDecoration: 'underline',
+  },
+}));
+
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          width: '100vw',
+          flexDirection: 'column',
+        }}
+      >
+        <Typography variant="h6" mb={2} fontWeight={700} align="center">
+          Loading The Awesomeness...
+        </Typography>
+        <LinearProgress sx={{ width: '30%', borderRadius: '2rem', mt: 2 }} />
+      </Box>
+    );
   return (
-    <Box
+    <Box 
       display="flex"
       justifyContent="space-between"
       mx="auto"
       height="calc(100vh - 4rem)"
       padding={2}
     >
-      <Box
+      <Box className="gradient-bg-welcome"
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -368,7 +415,7 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
           height: "100%",
           borderRadius: "1rem",
           border: "1px solid rgba(255, 255, 255, 0.20)",
-          background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
+          // background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
         }}
       >
         <Box
@@ -380,20 +427,19 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
             p: 2,
           }}
         >
-          {data.map(({ id, text }) => (
-            <ListItem key={id} sx={{ display: "list-item" }}>
-              <Typography
-                variant="body2"
-                fontWeight={500}
-                component={HashLink}
-                color="white"
-                sx={{ textDecoration: "none" }}
-                to={"#" + text.replace(/\s+/g, "-").toLowerCase()}
-              >
-                {text}
-              </Typography>
-            </ListItem>
-          ))}
+    {data.map(({ id, text }) => (
+      <StyledListItem key={id} className="gradient-bg-footer" >
+        <StyledTypography
+          variant="body1"
+          // style={{marginTop: '10px'}}
+          fontWeight={500}
+          component={HashLink}
+          to={"#" + text.replace(/\s+/g, "-").toLowerCase()}
+        >
+          {text}
+        </StyledTypography>
+      </StyledListItem>
+    ))}
         </Box>
         <Divider
           orientation="vertical"
@@ -416,10 +462,10 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
         >
           {data.map(({ id, text, description }) => (
             <Box key={id} id={text.replace(/\s+/g, "-").toLowerCase()}>
-              <Typography variant="h4" fontWeight={600} mt={1}>
+              <Typography variant="h4" fontWeight={600} mt={1} className="text-gradient">
                 {text}
               </Typography>
-              <Divider sx={{ mt: 1, mb: 2, bgcolor: "#2E3C51" }} />
+              <Divider sx={{ mt: 1, mb: 2, bgcolor: "#057b6f" }} />
               <Typography variant="body" fontWeight={500} mt={1}>
                 {description}
               </Typography>
@@ -431,7 +477,7 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
                     gap: "5px",
                   }}
                 >
-                  <Button
+                  <Button style={{background: "#4391b6"}}
                     variant="contained"
                     startIcon={<FaDownload />}
                     // onClick={() => handleArtifactDownload()}
@@ -439,7 +485,7 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
                     Download Artifacts
                   </Button>
                   <img src="arrow.svg" alt="------>" />
-                  <Button variant="outlined" startIcon={<FaClipboardList />}>
+                  <Button style={{borderBlockColor: "#4391b6", color: "gold"}} variant="outlined" startIcon={<FaClipboardList />}>
                     Copy files to frontend
                   </Button>
                 </Box>
@@ -455,10 +501,14 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
                   <Typography variant="h5" fontWeight={600} mt={2}>
                     For JavaScript/React JS
                   </Typography>
-                  <CopyBlock
+                  <CopyBlock 
+                    className="eth-card"
                     text={"npm install ethers"}
                     language={"shell"}
                     theme={shadesOfPurple}
+  //                   theme={{
+  //   codeBlock: 'eth-card', // Reference the custom style class
+  // }}
                     showLineNumbers={false}
                     customStyle={{
                       padding: "10px",
