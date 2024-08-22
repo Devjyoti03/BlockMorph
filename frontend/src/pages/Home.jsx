@@ -338,6 +338,7 @@ function Home() {
           }}
         >
           <LinkInput
+          id="dynamicInput"
           defaultValue={isTest ? inputLink : 'www.'}
           isDisabled={false}
           onChange={(e) => setInputLink(e.target.value)}

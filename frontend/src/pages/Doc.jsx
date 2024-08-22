@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, ListItem, Typography, Divider, Button } from "@mui/material";
+import { Box, ListItem, Typography, Divider, Button, LinearProgress } from "@mui/material";
 import { Code, shadesOfPurple, CopyBlock } from "react-code-blocks";
 import { HashLink } from "react-router-hash-link";
 import { FaDownload, FaClipboardList } from "react-icons/fa";
@@ -179,6 +179,7 @@ function Doc() {
     "reactjs",
     "python",
   ]);
+  const [loading,setLoading]=useState(true)
   //   const [languageIdx, setLanguageIdx] = useState(0);
   //   const { user } = useContext(AppContext);
 
@@ -207,12 +208,13 @@ function Doc() {
         });
 
         if (i < languages.length - 1) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise((resolve) => setTimeout(resolve, 100));
         }
       } catch (error) {
         console.error("Error fetching response:", error);
       }
     }
+    setLoading(false)
   };
 
   React.useEffect(() => {
@@ -220,7 +222,9 @@ function Doc() {
     // if(response.length===3) localStorage.setItem("data",JSON.stringify(response))
   }, []);
 
-  React.useEffect(() => console.log("Response", response), [response]);
+  React.useEffect(() => {
+    console.log("Response", response)
+  }, [response]);
 
   React.useEffect(() => {
     if (response.length > 0) {
@@ -349,7 +353,24 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
   //     };
   //     fetchData();
   //   }, [user]);
-
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+          width: '100vw',
+          flexDirection: 'column',
+        }}
+      >
+        <Typography variant="h6" mb={2} fontWeight={700} align="center">
+          Loading The Awesomeness...
+        </Typography>
+        <LinearProgress sx={{ width: '30%', borderRadius: '1rem', mt: 2 }} />
+      </Box>
+    );
   return (
     <Box 
       display="flex"
