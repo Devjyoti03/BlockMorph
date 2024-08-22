@@ -91,19 +91,13 @@ function EditorPage() {
   const [contractAdd, setContractAdd] = useState();
   const [currentStep, setCurrentStep] = useState(0);
 
-<<<<<<< HEAD
   //For Generate Sol Code
   const { idea } = useParams();
   const [additionalFeatures, setAdditionalFeatures] = useState("");
   const [solidityCode, setSolidityCode] = useState("");
   console.log(idea);
-=======
-  //For Generate Sol Code 
-  const { selectedOption } = useParams();
-  const [additionalFeatures, setAdditionalFeatures] = useState('');
-  const [solidityCode, setSolidityCode] = useState('');
+
   // console.log(selectedOption);
->>>>>>> 8bfb51081537033612477a87585903ea6f7648f4
   const onTabClick = async () => {
     try {
       const genAI = new GoogleGenerativeAI(
@@ -111,13 +105,8 @@ function EditorPage() {
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-<<<<<<< HEAD
       const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}.  Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
       const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.  `;
-=======
-      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${selectedOption}. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
-      const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
->>>>>>> 8bfb51081537033612477a87585903ea6f7648f4
 
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -147,7 +136,7 @@ function EditorPage() {
       console.error("Error generating Solidity code: ", error);
     }
   };
-    console.log(code);
+  console.log(code);
   const deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
@@ -313,7 +302,8 @@ function EditorPage() {
           display: "flex",
         }}
       >
-        <Box className="gradient-bg-editor"
+        <Box
+          className="gradient-bg-editor"
           sx={{
             borderRadius: 2,
             border: "1px solid rgba(255, 255, 255, 0.20)",
@@ -352,11 +342,8 @@ function EditorPage() {
                     Approach Selected
                   </Typography>
                   <Typography fontSize={13}>
-<<<<<<< HEAD
                     {decodeURIComponent(idea)}
-=======
-                  {/* {selectedOption} */}
->>>>>>> 8bfb51081537033612477a87585903ea6f7648f4
+                    {/* {selectedOption} */}
                   </Typography>
                 </>
               )}
@@ -534,7 +521,8 @@ function EditorPage() {
               </Typography>
               <Box
                 px={2}
-                pt={2} pb={5}
+                pt={2}
+                pb={5}
                 display="flex"
                 flexDirection="column"
                 height="100%"
@@ -584,14 +572,14 @@ function EditorPage() {
               <Typography fontSize={18} fontWeight="600">
                 Contract Summary
               </Typography>
-<<<<<<< HEAD
               <Typography fontSize={13}>
                 {summary ||
                   "Generated Solidity contract based on provided features and additional requirements."}
               </Typography>
-=======
-              <Typography fontSize={13}>{summary || "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}</Typography>
->>>>>>> 8bfb51081537033612477a87585903ea6f7648f4
+              <Typography fontSize={13}>
+                {summary ||
+                  "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}
+              </Typography>
             </Box>
             <Modal
               open={isModalOpen}
