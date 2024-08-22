@@ -64,7 +64,7 @@ body::after {
     #f0a79d 42.04%,
     #e07deb 55.12%,
     #e65ce6 71.54%,
-    rgb(51, 207, 207) 100%
+    #33cfcf 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -167,7 +167,7 @@ body::after {
   /* filter: blur(123px); */
 }
 .blue__gradient_2 {
-  background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #214d76 100%);
+  background: linear-gradient(180deg, rgba(188, 165, 255, 0) 0%, #224e77 100%);
   /* filter: blur(3px); */
 }
 
@@ -186,9 +186,12 @@ body::after {
   background-image:
     radial-gradient(at 0% 0%, rgb(27, 10, 111) 0, transparent 50%),
     radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
-    radial-gradient(at 100% 0%, rgb(64, 0, 124) 0, transparent 50%);
+    radial-gradient(at 100% 0%, #40007c 0, transparent 50%);
 }
 
+.color{
+  background-color: #4391b6;
+}
 .gradient-bg-services {
   background-color: #0f0e13;
   background-image:
@@ -197,17 +200,29 @@ body::after {
 }
 
 .gradient-bg-transactions {
-  background-color: #0f0e1393;
+  background-color: #00000093;
   background-image:
-    radial-gradient(at 0% 100%, rgba(16, 15, 21, 0.244) 0, transparent 50%),
-    radial-gradient(at 50% 0%, rgb(50, 65, 112) 0, transparent 50%);
+    radial-gradient(at 0% 100%, rgba(52, 35, 139, 0.244) 0, transparent 50%),
+    radial-gradient(at 50% 0%, rgb(61, 74, 112) 0, transparent 50%);
+    border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(209, 206, 206, 0.2);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      /* border: 1px solid rgba(0, 0, 0, 0.3); */
 }
 
 .gradient-bg-footer {
-  background-color: #0f0e13;
+  background-color: #70698e;
   background-image:
-    radial-gradient(at 0% 100%, rgb(14, 0, 84) 0, transparent 53%),
-    radial-gradient(at 50% 150%, rgb(52, 90, 173) 0, transparent 53%);
+    radial-gradient(at 0% 100%, rgb(43, 17, 177) 0, transparent 53%),
+    radial-gradient(at 50% 150%, #546da3 0, transparent 53%);
+}
+
+.gradient-bg-editor {
+  background-color: #18181a;
+  background-image:
+    radial-gradient(at 0% 100%, rgb(12, 8, 120) 0, transparent 53%),
+    radial-gradient(at 50% 150%, #004ef5 0, transparent 53%);
 }
 
 .blue-glassmorphism {
@@ -230,21 +245,21 @@ body::after {
 
 .eth-card {
   background-color: #a099ff;
-  height: 17rem;
-  width: 30rem;
+  /* height: 17rem; */
+  /* width: 30rem; */
   background-image:
     radial-gradient(at 83% 67%, rgb(152, 231, 156) 0, transparent 58%),
-    radial-gradient(at 67% 20%, hsla(357, 94%, 71%, 1) 0, transparent 59%),
+    radial-gradient(at 67% 20%, rgb(112, 135, 251) 0, transparent 59%),
     radial-gradient(at 88% 35%, hsla(222, 81%, 65%, 1) 0, transparent 50%),
-    radial-gradient(at 31% 91%, hsla(9, 61%, 61%, 1) 0, transparent 52%),
-    radial-gradient(at 27% 71%, hsla(336, 91%, 65%, 1) 0, transparent 49%),
-    radial-gradient(at 74% 89%, hsla(30, 98%, 65%, 1) 0, transparent 51%),
+    radial-gradient(at 31% 91%, rgb(95, 196, 216) 0, transparent 52%),
+    radial-gradient(at 27% 71%, rgb(150, 85, 247) 0, transparent 49%),
+    radial-gradient(at 74% 89%, rgb(78, 157, 253) 0, transparent 51%),
     radial-gradient(at 53% 75%, hsla(174, 94%, 68%, 1) 0, transparent 45%);
 }
 
 .text-gradient {
   background-color: #fff;
-  background-image: radial-gradient(at 4% 36%, rgb(245, 207, 244) 0, transparent 53%), radial-gradient(at 100% 60%, rgb(255, 10, 235) 0, transparent 50%);
+  background-image: radial-gradient(at 4% 36%, rgb(1, 234, 255) 0, transparent 53%), radial-gradient(at 100% 60%, rgb(255, 10, 235) 0, transparent 50%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

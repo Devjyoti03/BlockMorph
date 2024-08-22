@@ -141,7 +141,7 @@ function Home() {
     >
       <Box
       display="flex"
-      justifyContent="space-around"
+      justifyContent="space-between"
       alignItems="center"
       flexDirection="column" // Adjusted for smaller screens
       width="100%"
@@ -181,7 +181,7 @@ function Home() {
         >
           <Typography
             align="center"
-            variant="h2"
+            variant="h3"
             sx={{
               marginBottom: '8px',
               '@media (max-width: 500px)': {
@@ -349,7 +349,7 @@ function Home() {
                 Generating ideas!
               </Typography>
               <LinearProgress
-                sx={{ width: "30%", borderRadius: "1rem", mt: 2 }}
+                sx={{ width: "30%", borderRadius: "2rem", mt: 2 }}
               />
             </>
           ) : (
@@ -432,7 +432,7 @@ function Home() {
           )}
         </CardContent>
 
-        <Box width="70%" mx="auto" mt={4}>
+        {/* <Box width="70%" mx="auto" mt={4}>
           <Typography variant="h4" align="center" mb={2}>
             Explore Web3 App Ideas
           </Typography>
@@ -456,8 +456,11 @@ function Home() {
               ))}
             </tbody>
           </table>
-        </Box>
+        </Box> */}
       </BottomCard>
+      <Box>
+        hello
+      </Box>
     </Box>
     </div>
   );

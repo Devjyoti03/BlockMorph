@@ -77,7 +77,7 @@ const tempSteps = [
 function EditorPage() {
   // const { user } = useContext(AppContext);
   const { state } = useLocation();
-  const { selectedOption, url } = state;
+  // const { selectedOption, url } = state;
   const [inputQuestions, setInputQuestions] = useState("");
   const [code, setCode] = useState("");
   const [summary, setSummary] = useState("");
@@ -95,7 +95,7 @@ function EditorPage() {
   // const { idea } = useParams();
   const [additionalFeatures, setAdditionalFeatures] = useState('');
   const [solidityCode, setSolidityCode] = useState('');
-  console.log(selectedOption);
+  // console.log(selectedOption);
   const onTabClick = async () => {
     try {
       const genAI = new GoogleGenerativeAI("AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q");
@@ -259,7 +259,7 @@ function EditorPage() {
           display: "flex",
         }}
       >
-        <Box className="gradient-bg-footer"
+        <Box className="gradient-bg-editor"
           sx={{
             borderRadius: 2,
             border: "1px solid rgba(255, 255, 255, 0.20)",
@@ -298,7 +298,7 @@ function EditorPage() {
                     Approach Selected
                   </Typography>
                   <Typography fontSize={13}>
-                  {selectedOption}
+                  {/* {selectedOption} */}
                   </Typography>
                 </>
               )}

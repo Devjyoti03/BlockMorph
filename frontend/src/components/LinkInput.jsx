@@ -38,6 +38,7 @@ function LinkInput({ isDisabled, defaultValue, ...rest }) {
                   alignItems: 'center',
                   gap: '18px',
                   borderRadius: '10px',
+                  borderColor: 'darkblue',
  background: `var(--brand-mix, conic-gradient(
       from 180deg at 50% 50%,
       #0047ab 4.67deg,     /* Dark Blue */
