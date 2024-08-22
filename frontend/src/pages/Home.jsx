@@ -83,8 +83,8 @@ function Home() {
   const [inputLink, setInputLink] = useState("");
   const isTest = React.useContext(Context);
   console.log("isTest", isTest);
-  const handleIdeaClick = (idea) => {
-    navigate(`/generate/${idea}`);
+  const handleIdeaClick = (selectedOption) => {
+    navigate(`/generate/${selectedOption}`);
   };
   const [loading, setLoading] = useState(false);
 
@@ -445,13 +445,13 @@ function Home() {
               </tr>
             </thead>
             <tbody>
-              {web3Ideas.map((idea, index) => (
+              {web3Ideas.map((selectedOption, index) => (
                 <tr
                   key={index}
-                  onClick={() => handleIdeaClick(idea)}
+                  onClick={() => handleIdeaClick(selectedOption)}
                   style={{ cursor: "pointer", borderBottom: "1px solid #ddd" }}
                 >
-                  <td style={{ padding: "10px" }}>{idea}</td>
+                  <td style={{ padding: "10px" }}>{selectedOption}</td>
                 </tr>
               ))}
             </tbody>
