@@ -77,7 +77,7 @@ const tempSteps = [
 function EditorPage() {
   // const { user } = useContext(AppContext);
   const { state } = useLocation();
-  // const { selectedOption, url } = state;
+  //const { selectedOption, url } = state;
   const [inputQuestions, setInputQuestions] = useState("");
   const [code, setCode] = useState("");
   const [summary, setSummary] = useState("");
@@ -92,7 +92,7 @@ function EditorPage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   //For Generate Sol Code 
-  // const { idea } = useParams();
+  const { selectedOption } = useParams();
   const [additionalFeatures, setAdditionalFeatures] = useState('');
   const [solidityCode, setSolidityCode] = useState('');
   // console.log(selectedOption);

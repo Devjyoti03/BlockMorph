@@ -22,14 +22,9 @@ function MagicOptions() {
   const { state } = useLocation();
   // console.log(state);
   const { options, summary } = state;
-  const handleOptionOnClick = (data) => {
-    console.log(data);
-    navigate('/editor', {
-      state: {
-        selectedOption: data,
-        url: state?.url,
-      },
-    });
+
+  const handleIdeaClick = (selectedOption) => {
+    navigate(`/generate/${selectedOption}`);
   };
 
   return (
@@ -161,7 +156,7 @@ function MagicOptions() {
                       textAlign: 'center',
                       my: 1,
                     }}
-                    onClick={() => handleOptionOnClick(summary[i])}
+                    onClick={() => handleIdeaClick(summary[i])}
                   >
                     <ListItemButton
                       sx={{
