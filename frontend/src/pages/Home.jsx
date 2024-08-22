@@ -10,7 +10,9 @@ import {
   StepLabel,
   Divider,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
+import { motion } from 'framer-motion';
 import LinearProgress from "@mui/material/LinearProgress";
 import { FaCode, FaMagic } from "react-icons/fa";
 import BottomCard from "../components/BottomCard";
@@ -57,6 +59,25 @@ const gradientAnimation = keyframes`
 `;
 
 function Home() {
+  const isSmallScreen = useMediaQuery('(max-width:1000px)');
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+
+  const handleMouseMove = (e) => {
+    const { width, height, left, top } = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+    const rotateX = ((y / height) - 0.5) * 50; // Tilt image on Y-axis
+    const rotateY = ((x / width) - 0.5) * -50; // Tilt image on X-axis
+
+    setRotateX(rotateX);
+    setRotateY(rotateY);
+  };
+
+  const handleMouseLeave = () => {
+    setRotateX(0);
+    setRotateY(0);
+  };
   const navigate = useNavigate();
   // const defaultLink = document.querySelector("rt").value;
   const [inputLink, setInputLink] = useState("");
@@ -72,9 +93,9 @@ function Home() {
     try {
       if (isTest) {
         // Simulate a 7-second loading delay if isTest is true
-        await new Promise((resolve) => setTimeout(resolve, 7000));
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
-
+      console.log(inputLink)
       const { data } = await instance.post("/getOptions", {
         url: inputLink, // Adjusted field name to match backend
       });
@@ -87,6 +108,7 @@ function Home() {
         console.log(ideas);
 
         const ideaSummary = Object.values(jsonData);
+        console.log(ideaSummary);
         navigate("/options", {
           state: {
             // Adjust according to the actual data structure if needed
@@ -117,45 +139,179 @@ function Home() {
       mx="auto"
       height="calc(100vh - 4rem)"
     >
-      <Box 
+      <Box
       display="flex"
-      justifyContent="space-between"
+      justifyContent="space-around"
       alignItems="center"
-      flexDirection="row"
+      flexDirection="column" // Adjusted for smaller screens
       width="100%"
-      mx="auto"
-      height="calc(100vh - 4rem)"
-      px={4}
-      pt={5} pb={10}>
-        <Box display='flex' flexDirection='column' className="gradient-bg-transactions" px={10} py={3} borderRadius={4}>
-          <Typography variant="h2" style={{ marginBottom: '8px' }}>
+      // zIndex={3}
+      height="100%" // Adjusted to full height
+      px={2} // Reduced padding for smaller screens
+      pt={3} pb={3} // Reduced padding for smaller screens
+      sx={{
+        '@media (min-width: 1000px)': {
+          flexDirection: 'row',
+          justifyContent:"space-between", // Switch back to row layout for larger screens
+          px: 4, // Restore padding for larger screens
+          pt: 10, pb: 10, // Restore padding for larger screens
+        },
+      }}
+    >
+      
+      <Box
+        display='flex'
+        flexDirection='column'
+        className="gradient-bg-transactions"
+        px={4} py={3}
+        borderRadius={4}
+        mb={4}
+        sx={{
+          width: '100%',
+          maxWidth: '650px',
+          '& img': {
+            maxWidth: '100%',
+          },
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <Typography
+            align="center"
+            variant="h2"
+            sx={{
+              marginBottom: '8px',
+              '@media (max-width: 500px)': {
+                fontSize: '30px',
+              },
+              '@media (min-width: 500px) and (max-width: 800px)': {
+                fontSize: '50px',
+              },
+            }}
+          >
             Unfolding the
           </Typography>
-          <Typography align="center" variant="h1" className='text-gradient-1' style={{ marginBottom: '8px' }}>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <Typography
+            align="center"
+            variant="h1"
+            className='text-gradient-1'
+            sx={{
+              marginBottom: '8px',
+              '@media (max-width: 500px)': {
+                fontSize: '50px',
+              },
+              '@media (min-width: 500px) and (max-width: 800px)': {
+                fontSize: '80px',
+              },
+            }}
+          >
             Transition
           </Typography>
-          <Typography variant="h3" className='text-gradient'>
-            from Web2 
-            <img style={{ verticalAlign: 'middle', marginLeft: '14px' }}  src="crv.svg" alt="bal"/>
-            </Typography>
-          <Typography align="right" className='text-gradient' variant="h2" style={{ marginBottom: '20px' }}>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.6, duration: 0.6 }}
+        >
+          <Typography
+            align="left"
+            variant="h2"
+            className='text-gradient'
+            sx={{
+              marginBottom: '8px',
+              '@media (max-width: 500px)': {
+                fontSize: '30px',
+              },
+              '@media (min-width: 500px) and (max-width: 800px)': {
+                fontSize: '50px',
+              },
+            }}
+          >
+            from Web2
+            <img style={{ verticalAlign: 'middle', marginLeft: '14px' }} src="crv.svg" alt="bal" />
+          </Typography>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8, duration: 0.6 }}
+        >
+          <Typography
+            align="right"
+            variant="h2"
+            className='text-gradient'
+            sx={{
+              marginBottom: '20px',
+              '@media (max-width: 500px)': {
+                fontSize: '30px',
+              },
+              '@media (min-width: 500px) and (max-width: 800px)': {
+                fontSize: '50px',
+              },
+            }}
+          >
             to Web3
           </Typography>
-          <Typography align='center' variant="h3" className='text-gradient-2'>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+        >
+          <Typography
+            align="center"
+            variant="h3"
+            className='text-gradient-2'
+            sx={{
+              '@media (max-width: 500px)': {
+                fontSize: '25px',
+              },
+              '@media (min-width: 500px) and (max-width: 800px)': {
+                fontSize: '50px',
+              },
+            }}
+          >
             in a Single Click!!!
           </Typography>
-        </Box>
-        <img
-          src="new.png"
-          style={{
-            display: 'block',
-            width: '600px',
-          }}
-          alt="Web2 --> Web3"
-        />
-        
-        
+        </motion.div>
       </Box>
+         <Box>
+      <motion.img
+        src={isSmallScreen ? "home.svg" : "new.png"}
+        style={{
+          display: 'block',
+          width: '100%',
+          minWidth: isSmallScreen ? '200px' : '400px',
+          maxWidth: '600px',
+          height: 'auto',
+          cursor: 'pointer',
+          // transformStyle: 'preserve-3d', // Preserves 3D effect
+        }}
+        alt="Web2 --> Web3"
+        animate={{ rotateX, rotateY }} // Apply the rotation
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        transition={{ type: 'spring', stiffness: 30, damping: 20 }}
+        // whileHover={{
+        //   rotateX: 25, // Rotate on the X-axis
+        //   rotateY: -25, // Rotate on the Y-axis
+        // }} // Smooth spring-like motion
+      />
+    </Box>
+    </Box>
       <BottomCard 
         sx={{
           display: "flex",
@@ -182,7 +338,7 @@ function Home() {
           }}
         >
           <LinkInput
-          defaultValue={isTest ? inputLink : ''}
+          defaultValue={isTest ? inputLink : 'www.'}
           isDisabled={false}
           onChange={(e) => setInputLink(e.target.value)}
         />
@@ -266,7 +422,7 @@ function Home() {
                     component={Link}
                     to={`/editor`}
                     text="Open in code editor"
-                    icon={<FaCode />}
+                    icon={<FaCode/>}
                     fullWidth
                   />
                 </Box>

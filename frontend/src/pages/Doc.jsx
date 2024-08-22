@@ -351,14 +351,14 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
   //   }, [user]);
 
   return (
-    <Box
+    <Box 
       display="flex"
       justifyContent="space-between"
       mx="auto"
       height="calc(100vh - 4rem)"
       padding={2}
     >
-      <Box
+      <Box className="gradient-bg-welcome"
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -368,7 +368,7 @@ contract = w3.eth.contract(address=${contractAddress}, abi=${contractName}['abi'
           height: "100%",
           borderRadius: "1rem",
           border: "1px solid rgba(255, 255, 255, 0.20)",
-          background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
+          // background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
         }}
       >
         <Box

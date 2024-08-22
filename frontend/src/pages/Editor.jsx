@@ -77,6 +77,7 @@ const tempSteps = [
 function EditorPage() {
   // const { user } = useContext(AppContext);
   const { state } = useLocation();
+  const { selectedOption, url } = state;
   const [inputQuestions, setInputQuestions] = useState("");
   const [code, setCode] = useState("");
   const [summary, setSummary] = useState("");
@@ -91,16 +92,16 @@ function EditorPage() {
   const [currentStep, setCurrentStep] = useState(0);
 
   //For Generate Sol Code 
-  const { idea } = useParams();
+  // const { idea } = useParams();
   const [additionalFeatures, setAdditionalFeatures] = useState('');
   const [solidityCode, setSolidityCode] = useState('');
-  console.log(idea);
+  console.log(selectedOption);
   const onTabClick = async () => {
     try {
       const genAI = new GoogleGenerativeAI("AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q");
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
+      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${selectedOption}. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
       const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
 
       const result = await model.generateContent(prompt);
@@ -130,7 +131,7 @@ function EditorPage() {
       console.error("Error generating Solidity code: ", error);
     }
   };
-
+    console.log(code);
   const deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
@@ -258,11 +259,11 @@ function EditorPage() {
           display: "flex",
         }}
       >
-        <Box
+        <Box className="gradient-bg-footer"
           sx={{
             borderRadius: 2,
             border: "1px solid rgba(255, 255, 255, 0.20)",
-            background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
+            // background: "linear-gradient(180deg, #2B243C 0%, #0B031E 100%)",
             width: "100%",
             display: "flex",
             justifyContent: "space-evenly",
@@ -297,7 +298,7 @@ function EditorPage() {
                     Approach Selected
                   </Typography>
                   <Typography fontSize={13}>
-                  {decodeURIComponent(idea)}
+                  {selectedOption}
                   </Typography>
                 </>
               )}
@@ -313,16 +314,16 @@ function EditorPage() {
               }}
             >
               {tabsLayout[0] === 25 && (
-                <Box height="100%">
+                <Box height="80%">
                   <Typography variant="body" fontWeight={600} align="center">
                     What features do you want your smart contract to implement?
                   </Typography>
-                  <Box height="80%" mt={1}>
+                  <Box height="140px" mt={1}>
                     <TextField
                       placeholder="Enter here..."
                       fullWidth
                       multiline
-                      minRows={9}
+                      minRows={6}
                       onChange={(e) => setInputQuestions(e.target.value)}
                       value={inputQuestions}
                       sx={{
@@ -463,7 +464,7 @@ function EditorPage() {
                 borderRadius: 1,
                 border: "1px solid #2E3C51",
                 background: "rgba(255, 255, 255, 0.05)",
-                height: "25rem",
+                height: "20rem",
                 display: "flex",
                 alignItems: "center",
                 flexDirection: "column",
@@ -475,7 +476,7 @@ function EditorPage() {
               </Typography>
               <Box
                 px={2}
-                py={5}
+                pt={2} pb={5}
                 display="flex"
                 flexDirection="column"
                 height="100%"
@@ -525,7 +526,7 @@ function EditorPage() {
               <Typography fontSize={18} fontWeight="600">
                 Contract Summary
               </Typography>
-              <Typography fontSize={13}>{summary || "Generated Solidity contract based on provided features and additional requirements."}</Typography>
+              <Typography fontSize={13}>{summary || "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}</Typography>
             </Box>
             <Modal
               open={isModalOpen}
