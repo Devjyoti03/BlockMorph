@@ -139,8 +139,8 @@ function EditorPage() {
   console.log(code);
 
   useEffect(() => {
-    localStorage.setItem("solCode", JSON.stringify(solidityCode));
-  }, [solidityCode]);
+    localStorage.setItem("solCode", JSON.stringify(code));
+  }, [code]);
 
   /*const  deployContract = () => {
     console.log(code); // Print the editor value
@@ -263,13 +263,14 @@ function EditorPage() {
 
   async function handleDownloadHardhat() {
     try {
+      console.log(code)
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const userAddress = accounts[0]; // MetaMask address
+      const userAddress = accounts[0];
       console.log(userAddress);
       const { data } = await instance.post("/process_link", {
-        solCode: solidityCode,
+        solCode: code,
         meta_id: `project${userAddress}`,
       });
 
