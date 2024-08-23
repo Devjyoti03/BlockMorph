@@ -14,7 +14,7 @@ from deploy_contract import deploy_contract
 from get_options import process_url
 from generate_docs import generate_documentation
 
-from generate_docs import generate_documentation
+
 
 load_dotenv()
 
@@ -184,11 +184,11 @@ def generate_response():
     demo_code = data['code']
     
     try:
-        # Generate the documentation using the generate_documentation function
         response_data = generate_documentation(demo_code, language)
         return jsonify(response_data)
     
     except ValueError as e:
         return jsonify({"error": str(e)}), 500
+       
 if __name__ == '__main__':
     app.run(debug=False)
