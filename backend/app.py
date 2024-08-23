@@ -118,7 +118,7 @@ def process_link():
         os.makedirs(contracts_dir, exist_ok=True)
 
         # Save the Solidity code to a .sol file
-        solidity_file_path = os.path.join(contracts_dir, 'MyContract.sol')
+        solidity_file_path = os.path.join(contracts_dir, 'contract.sol')
         with open(solidity_file_path, 'w') as solidity_file:
             solidity_file.write(solidity_code)
 
@@ -168,4 +168,4 @@ def download(user_id):
     return send_file(zip_filepath, as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
