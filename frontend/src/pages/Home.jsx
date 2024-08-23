@@ -26,6 +26,7 @@ import LightButton from "../components/LightButton";
 import { Context } from "../context/Context";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import AboutUs from "../components/About.jsx";
 
 const web3Ideas = [
   "Decentralized Voting System",
@@ -163,6 +164,7 @@ function Home() {
         display='flex'
         flexDirection='column'
         className="gradient-bg-transactions"
+        boxShadow={'0 4px 30px rgba(209, 206, 206, 0.2)'}
         px={4} py={3}
         borderRadius={4}
         mb={4}
@@ -288,7 +290,7 @@ function Home() {
           </Typography>
         </motion.div>
       </Box>
-         <Box>
+         <Box className="sidebar">
       <motion.img
         src={isSmallScreen ? "home.svg" : "new.png"}
         style={{
@@ -312,7 +314,7 @@ function Home() {
       />
     </Box>
     </Box>
-      <BottomCard 
+      <BottomCard
         sx={{
           display: "flex",
           justifyContent: "center",
@@ -458,9 +460,7 @@ function Home() {
           </table>
         </Box> */}
       </BottomCard>
-      <Box>
-        hello
-      </Box>
+      <AboutUs/>
     </Box>
     </div>
   );
