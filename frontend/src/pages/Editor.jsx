@@ -137,10 +137,22 @@ function EditorPage() {
     }
   };
   console.log(code);
-  const deployContract = () => {
+
+
+
+  /*const  deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
+  };*/
+  const deployContract = () => {
+    console.log(code); 
   };
+
+
+
+
+
+
 
   // const handleDownloadHardhat = async () => {
   //   setCurrentStep(0);
@@ -255,9 +267,12 @@ function EditorPage() {
 
   async function handleDownloadHardhat() {
     try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const userAddress = accounts[0]; // MetaMask address
+      console.log(userAddress)
       const { data } = await instance.post("/process_link", {
         solCode: solidityCode,
-        meta_id: "sohamsAccount",
+        meta_id: userAddress,
       });
 
       if (data.success) {
@@ -267,7 +282,7 @@ function EditorPage() {
           "/compile",
           {
             contract_name: "example",
-            meta_acc: "sohamsAccount",
+            meta_acc: userAddress,
           },
           {
             responseType: "application/json", // Important to handle binary data
