@@ -125,46 +125,46 @@ const data = [
 //   },
 // ];
 
-const solidity_code = `solidity
-pragma solidity ^0.8.0;
+// const solidity_code = `solidity
+// pragma solidity ^0.8.0;
 
-contract Voting {
-    struct Proposal {
-        string name;
-        uint256 upvotes;
-        uint256 downvotes;
-    }
+// contract Voting {
+//     struct Proposal {
+//         string name;
+//         uint256 upvotes;
+//         uint256 downvotes;
+//     }
 
-    mapping(address => mapping(string => bool)) public votes;
-    Proposal[] public proposals;
+//     mapping(address => mapping(string => bool)) public votes;
+//     Proposal[] public proposals;
 
-    function addProposal(string memory _name) public {
-        proposals.push(Proposal(_name, 0, 0));
-    }
+//     function addProposal(string memory _name) public {
+//         proposals.push(Proposal(_name, 0, 0));
+//     }
 
-    function upvote(uint256 _index) public {
-        require(_index < proposals.length, "Invalid proposal index");
-        require(!votes[msg.sender][proposals[_index].name], "Already upvoted");
+//     function upvote(uint256 _index) public {
+//         require(_index < proposals.length, "Invalid proposal index");
+//         require(!votes[msg.sender][proposals[_index].name], "Already upvoted");
 
-        proposals[_index].upvotes++;
-        votes[msg.sender][proposals[_index].name] = true;
-    }
+//         proposals[_index].upvotes++;
+//         votes[msg.sender][proposals[_index].name] = true;
+//     }
 
-    function downvote(uint256 _index) public {
-        require(_index < proposals.length, "Invalid proposal index");
-        require(!votes[msg.sender][proposals[_index].name], "Already downvoted");
+//     function downvote(uint256 _index) public {
+//         require(_index < proposals.length, "Invalid proposal index");
+//         require(!votes[msg.sender][proposals[_index].name], "Already downvoted");
 
-        proposals[_index].downvotes++;
-        votes[msg.sender][proposals[_index].name] = true;
-    }
+//         proposals[_index].downvotes++;
+//         votes[msg.sender][proposals[_index].name] = true;
+//     }
 
-    function getProposal(uint256 _index) public view returns (string memory, uint256, uint256) {
-        require(_index < proposals.length, "Invalid proposal index");
-        return (proposals[_index].name, proposals[_index].upvotes, proposals[_index].downvotes);
-    }
-}`;
+//     function getProposal(uint256 _index) public view returns (string memory, uint256, uint256) {
+//         require(_index < proposals.length, "Invalid proposal index");
+//         return (proposals[_index].name, proposals[_index].upvotes, proposals[_index].downvotes);
+//     }
+// }`;
 
-const singleLineSolidityCode = JSON.stringify(solidity_code);
+
 
 function Doc() {
   const [toggle, setToggle] = useState(0);
@@ -180,6 +180,8 @@ function Doc() {
     "python",
   ]);
   const [loading,setLoading]=useState(true)
+  const singleLineSolidityCode = localStorage.getItem("solCode");
+
   //   const [languageIdx, setLanguageIdx] = useState(0);
   //   const { user } = useContext(AppContext);
 

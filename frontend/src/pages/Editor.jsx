@@ -138,6 +138,10 @@ function EditorPage() {
   };
   console.log(code);
 
+  useEffect(() => {
+    localStorage.setItem("solCode", JSON.stringify(solidityCode));
+  }, [solidityCode]);
+
   /*const  deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
