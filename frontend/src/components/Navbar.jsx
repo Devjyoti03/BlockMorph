@@ -59,12 +59,26 @@ function Navbar() {
       <Box display="flex" alignItems="center" justifyContent="center">
         {account ? (
           <Box display="flex" alignItems="center" justifyContent="center">
+            <Box sx={{ display: 'flex' }} mr={1}>
+                  <img
+                    src="bc.svg"
+                    alt="text"
+                    style={{
+                      display: 'block',
+                      width: '1.4rem',
+                    }}
+                  />
+                  <Typography variant="h5">
+                    10 
+                  </Typography>
+                </Box>
         <img src="./metamask-logo.png" alt="Credit Icon" style={{width: '50px'}} />
         <Typography variant="body" px={1} style={{color: 'black', 
               padding: "10px", borderRadius: "10px"}} className='eth-card'>
             {account.slice(0, 6)}...{account.slice(-4)}
           </Typography>
-      </Box>
+          
+        </Box>
         ) : (
           <Button
             onClick={connectWallet}
