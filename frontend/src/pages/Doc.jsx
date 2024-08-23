@@ -391,10 +391,15 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
           flexDirection: 'column',
         }}
       >
-        <Typography variant="h6" mb={2} fontWeight={700} align="center">
+        <div className="loader">
+        <img src="b.svg" alt="Loading" className="loader-image" />
+        {/* <h1 className="text-gradient">Blocks Assemble...</h1> */}
+      </div>
+        <Typography className="text-gradient-2" variant="h4" mb={2} fontWeight={700} align="center">
           Loading The Awesomeness...
         </Typography>
-        <LinearProgress sx={{ width: '30%', borderRadius: '2rem', mt: 2 }} />
+        {/* <LinearProgress sx={{ width: '30%', borderRadius: '2rem', mt: 2 }} /> */}
+        
       </Box>
     );
   return (
@@ -404,6 +409,22 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
       mx="auto"
       height="calc(100vh - 4rem)"
       padding={2}
+      sx={{
+        '&::-webkit-scrollbar': {
+          width: '2px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'cyan',
+          borderRadius: '5px',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
+        },
+        /* Firefox scrollbar styles */
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'cyan transparent',
+        
+      }}
     >
       <Box className="gradient-bg-welcome"
         sx={{
@@ -428,18 +449,21 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
           }}
         >
     {data.map(({ id, text }) => (
-      <StyledListItem key={id} className="gradient-bg-footer" >
-        <StyledTypography
-          variant="body1"
-          // style={{marginTop: '10px'}}
-          fontWeight={500}
-          component={HashLink}
-          to={"#" + text.replace(/\s+/g, "-").toLowerCase()}
-        >
-          {text}
-        </StyledTypography>
-      </StyledListItem>
-    ))}
+  <HashLink
+    key={id}
+    to={"#" + text.replace(/\s+/g, "-").toLowerCase()}
+    className="link-wrapper" // Add a class for additional styling if needed
+  >
+    <StyledListItem className="gradient-bg-footer sidebar">
+      <StyledTypography
+        variant="body1"
+        fontWeight={500}
+      >
+        {text}
+      </StyledTypography>
+    </StyledListItem>
+  </HashLink>
+))}
         </Box>
         <Divider
           orientation="vertical"

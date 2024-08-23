@@ -36,6 +36,27 @@ function MagicOptions() {
       width="80%"
       mx="auto"
       height="calc(100vh - 8rem)"
+      sx={{
+        height: "calc(100vh - 4rem)",
+          width: "100vw",
+          padding: "1rem",
+          margin: "auto",
+          display: "flex",
+          // overflowY: 'auto',
+        '&::-webkit-scrollbar': {
+          width: '2px',
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'cyan',
+          borderRadius: '5px',
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
+        },
+        /* Firefox scrollbar styles */
+        scrollbarWidth: 'thin',
+        scrollbarColor: 'cyan transparent',
+      }}
     >
       <Box width="60%" mx="auto" pt={4} mb={3}>
         <img
@@ -53,7 +74,7 @@ function MagicOptions() {
         justifyContent="center" >
         <LinkInput isDisabled defaultValue={state?.url} />
         </Box>
-        <Typography className='text-gradient-2'
+        <Typography className='text-gradient-1'
           align="center"
           sx={{
             textAlign: 'center',
@@ -62,7 +83,7 @@ function MagicOptions() {
             textDecoration: 'none',
             transition: 'all 0.3s ease-in-out', // Adding transition for a smooth effect
             '&:hover': {
-              textShadow: '0px 0px 10px lightpink',
+              textShadow: '0px 0px 30px black',
             },
           }}
           variant="h3"
@@ -95,10 +116,10 @@ function MagicOptions() {
             overflowY: 'auto',
           }}
         >
-          <Typography className='text-gradient-1'
+          <Typography className='text-gradient-2'
           align="center"
           sx={{
-            textAlign: 'center',
+            textAlign: 'left',
             display: 'flex',
             color: 'inherit',
             textDecoration: 'none',
@@ -107,12 +128,12 @@ function MagicOptions() {
               // textShadow: '0px 0px 10px lightpink',
             // },
           }}
-          variant="h3"
+          variant="h4"
           component={Link}
           to="/"
           fontWeight={600}
         >
-          Rock & Roll as The Transition is on!!
+          The Amazing Ideas are hereby presented...
         </Typography>
           {/* <Typography variant="h5" mb={2} fontWeight={600}>
             Current approach

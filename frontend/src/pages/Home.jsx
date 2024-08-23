@@ -87,7 +87,19 @@ function Home() {
   const handleIdeaClick = (selectedOption) => {
     navigate(`/generate/${selectedOption}`);
   };
-  const [loading, setLoading] = useState(false);
+  
+  const [load, setLoad] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoad(false);
+    }, 5000); // Hide loader after 5 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const [loading, setLoading] = useState(true);
+
 
   const handleMagicButtonClick = async () => {
     setLoading(true);
@@ -129,6 +141,15 @@ function Home() {
     }
   };
 
+if (load)
+    return (
+    <div className="loader-container bg-black-gradient-2">
+      <div className="loader">
+        <img src="b.svg" alt="Loading" className="loader-image" />
+        <h1 className="text-gradient">Blocks Assemble...</h1>
+      </div>
+    </div>
+  );
   return (
     <div className='blue__gradient'>
     <Box
