@@ -276,20 +276,37 @@ function EditorPage() {
       if (data.success) {
         alert("Brownie Project Initiated");
         // Step 2: Trigger compilation process
-        const compileResponse = await instance
-          .post(
-            "/compile",
-            {
-              contract_name: "contract.sol",
-              meta_acc: `project${userAddress}`,
-            },
-            {
-              responseType: "application/json", // Important to handle binary data
-            }
-          )
-          .then((data) => {
-            alert("compiled successfully, baby!");
-          });
+        const compileResponse = async () =>
+          await instance
+            .post(
+              "/compile",
+              {
+                contract_name: "contract.sol",
+                meta_acc: `project${userAddress}`,
+              },
+              {
+                responseType: "application/json", // Important to handle binary data
+              }
+            )
+            .then((data) => {
+              alert("compiled successfully, baby!");
+              const deployContract = async () =>
+                await instance
+                  .post(
+                    "/deploy",
+                    {
+                      meta_acc: `project${userAddress}`,
+                    },
+                    {
+                      responseType: "application/json", // Important to handle binary data
+                    }
+                  )
+                  .then((data) => {
+                    if (data.success) {
+                      alert(`contract deployed at ${data.deployment_address}`);
+                    }
+                  });
+            });
 
         // Step 3: Save the zip file
         // const blob = new Blob([compileResponse.data], {
