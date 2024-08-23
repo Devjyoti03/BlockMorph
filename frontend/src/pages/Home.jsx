@@ -98,7 +98,7 @@ function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
   const handleMagicButtonClick = async () => {
