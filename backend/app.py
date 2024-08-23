@@ -12,6 +12,10 @@ from test_contract import test_contract
 from scan_contract import scan_contract
 from deploy_contract import deploy_contract
 from get_options import process_url
+from generate_docs import generate_documentation
+
+from generate_docs import generate_documentation
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -167,5 +171,24 @@ def download(user_id):
     shutil.make_archive(zip_filepath.replace('.zip', ''), 'zip', user_dir)
     return send_file(zip_filepath, as_attachment=True)
 
+@app.route('/generate', methods=['POST'])
+def generate_response():
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+
+    data = request.get_json()
+    if 'language' not in data or 'code' not in data:
+        return jsonify({"error": "'language' and 'code' keys are required in the JSON request"}), 400
+    
+    language = data['language']
+    demo_code = data['code']
+    
+    try:
+        # Generate the documentation using the generate_documentation function
+        response_data = generate_documentation(demo_code, language)
+        return jsonify(response_data)
+    
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 500
 if __name__ == '__main__':
     app.run(debug=True)
