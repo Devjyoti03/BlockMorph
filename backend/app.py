@@ -184,7 +184,6 @@ def generate_response():
     demo_code = data['code']
     
     try:
-        # Generate the documentation using the generate_documentation function
         response_data = generate_documentation(demo_code, language)
         return jsonify(response_data)
     
