@@ -14,7 +14,7 @@ from deploy_contract import deploy_contract
 from get_options import process_url
 from generate_docs import generate_documentation
 
-from generate_docs import generate_documentation
+
 
 load_dotenv()
 
@@ -190,5 +190,6 @@ def generate_response():
     
     except ValueError as e:
         return jsonify({"error": str(e)}), 500
+       
 if __name__ == '__main__':
     app.run(debug=False)
