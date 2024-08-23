@@ -18,7 +18,7 @@ import YellowButton from "../components/YellowButton";
 import { FaCode, FaDownload } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLocation,useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 // import { instance } from "../../config/axios";
 import { encode } from "base-64";
 import axios from "axios";
@@ -28,8 +28,8 @@ import { Context } from "../context/Context";
 // import { doc, updateDoc } from "firebase/firestore";
 import Modal from "@mui/material/Modal";
 import CustomizedDialogs from "../components/LegacyDialog";
-import { GoogleGenerativeAI } from '@google/generative-ai';
-
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import instance from "../config/axiosInstance";
 
 const tempSteps = [
   {
@@ -91,34 +91,39 @@ function EditorPage() {
   const [contractAdd, setContractAdd] = useState();
   const [currentStep, setCurrentStep] = useState(0);
 
-  //For Generate Sol Code 
-  const { selectedOption } = useParams();
-  const [additionalFeatures, setAdditionalFeatures] = useState('');
-  const [solidityCode, setSolidityCode] = useState('');
+  //For Generate Sol Code
+  const { idea } = useParams();
+  const [additionalFeatures, setAdditionalFeatures] = useState("");
+  const [solidityCode, setSolidityCode] = useState("");
+  console.log(idea);
+
   // console.log(selectedOption);
   const onTabClick = async () => {
     try {
-      const genAI = new GoogleGenerativeAI("AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q");
+      const genAI = new GoogleGenerativeAI(
+        "AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q"
+      );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${selectedOption}. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
-      const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.`;
+      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}.  Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
+      const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.  `;
 
       const result = await model.generateContent(prompt);
       const response = await result.response;
-      const generatedCode = await response.text();
-      
+      let generatedCode = await response.text();
+      generatedCode = "// SPDX-License-Identifier: MIT\n" + generatedCode;
       setSolidityCode(generatedCode);
+
       setCode(generatedCode);
 
       // Prompt to generate a summary of the generated Solidity code
-  const summaryPrompt = `Summarize the key features and functions of the following Solidity smart contract code in a concise manner. Code: ${generatedCode}`;
-  const summaryResult = await model.generateContent(summaryPrompt);
-  const summaryResponse = await summaryResult.response;
-  const generatedSummary = await summaryResponse.text();
+      const summaryPrompt = `Summarize the key features and functions of the following Solidity smart contract code in a concise manner. Code: ${generatedCode}`;
+      const summaryResult = await model.generateContent(summaryPrompt);
+      const summaryResponse = await summaryResult.response;
+      const generatedSummary = await summaryResponse.text();
 
-  setSummary(generatedSummary);
-  setContractName("YourContractName");
+      setSummary(generatedSummary);
+      setContractName("YourContractName");
 
       if (tabsLayout[0] === 25) {
         setTabsLayout([5, 65, 30]);
@@ -131,11 +136,23 @@ function EditorPage() {
       console.error("Error generating Solidity code: ", error);
     }
   };
-    console.log(code);
-  const deployContract = () => {
+  console.log(code);
+
+
+
+  /*const  deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
+  };*/
+  const deployContract = () => {
+    console.log(code); 
   };
+
+
+
+
+
+
 
   // const handleDownloadHardhat = async () => {
   //   setCurrentStep(0);
@@ -248,6 +265,47 @@ function EditorPage() {
   //   window.location.href = "/doc";
   // };
 
+  async function handleDownloadHardhat() {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const userAddress = accounts[0]; // MetaMask address
+      console.log(userAddress)
+      const { data } = await instance.post("/process_link", {
+        solCode: solidityCode,
+        meta_id: userAddress,
+      });
+
+      if (data.success) {
+        alert("Brownie Project Initiated");
+        // Step 2: Trigger compilation process
+        const compileResponse = await instance.post(
+          "/compile",
+          {
+            contract_name: "example",
+            meta_acc: userAddress,
+          },
+          {
+            responseType: "application/json", // Important to handle binary data
+          }
+        );
+
+        // Step 3: Save the zip file
+        // const blob = new Blob([compileResponse.data], {
+        //   type: "application/zip",
+        // });
+        // saveAs(blob, `${user_id}.zip`);
+        if (compileResponse.data.status) {
+          alert("compilation success", compileResponse.data.abi);
+
+          console.log(compileResponse.data.abi);
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      alert("error", err);
+    }
+  }
+
   return (
     <>
       <Box
@@ -259,7 +317,8 @@ function EditorPage() {
           display: "flex",
         }}
       >
-        <Box className="gradient-bg-editor"
+        <Box
+          className="gradient-bg-editor"
           sx={{
             borderRadius: 2,
             border: "1px solid rgba(255, 255, 255, 0.20)",
@@ -298,7 +357,8 @@ function EditorPage() {
                     Approach Selected
                   </Typography>
                   <Typography fontSize={13}>
-                  {/* {selectedOption} */}
+                    {decodeURIComponent(idea)}
+                    {/* {selectedOption} */}
                   </Typography>
                 </>
               )}
@@ -443,11 +503,11 @@ function EditorPage() {
                 // onClick={() => checkSlitherVul()}
               />
               <YellowButton
-                text={loading ? "Loading...." : "Download Hardhat"}
+                text={loading ? "Loading...." : "Get Brownie"}
                 fullWidth
                 isDisabled={isDisabled}
                 icon={<LuHardHat color="black" />}
-                // onClick={() => handleDownloadHardhat()}
+                onClick={() => handleDownloadHardhat()}
               />
             </Box>
           </Box>
@@ -476,7 +536,8 @@ function EditorPage() {
               </Typography>
               <Box
                 px={2}
-                pt={2} pb={5}
+                pt={2}
+                pb={5}
                 display="flex"
                 flexDirection="column"
                 height="100%"
@@ -526,7 +587,14 @@ function EditorPage() {
               <Typography fontSize={18} fontWeight="600">
                 Contract Summary
               </Typography>
-              <Typography fontSize={13}>{summary || "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}</Typography>
+              <Typography fontSize={13}>
+                {summary ||
+                  "Generated Solidity contract based on provided features and additional requirements."}
+              </Typography>
+              <Typography fontSize={13}>
+                {summary ||
+                  "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}
+              </Typography>
             </Box>
             <Modal
               open={isModalOpen}
