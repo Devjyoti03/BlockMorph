@@ -98,7 +98,7 @@ function Home() {
     return () => clearTimeout(timer);
   }, []);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
   const handleMagicButtonClick = async () => {
@@ -371,9 +371,14 @@ if (load)
               <Typography variant="h6" mb={2} fontWeight={700} align="center">
                 Generating ideas!
               </Typography>
-              <LinearProgress
+              {/* <LinearProgress
                 sx={{ width: "30%", borderRadius: "2rem", mt: 2 }}
-              />
+              /> */}
+              <div className="loader">
+        <img src="b.svg" alt="Loading" className="loader-image" />
+        {/* <h1 className="text-gradient">Blocks Assemble...</h1> */}
+      </div>
+
             </>
           ) : (
             <>
