@@ -138,21 +138,17 @@ function EditorPage() {
   };
   console.log(code);
 
-
+  useEffect(() => {
+    localStorage.setItem("solCode", JSON.stringify(code));
+  }, [code]);
 
   /*const  deployContract = () => {
     console.log(code); // Print the editor value
     // Deploy contract Codee... Time lagbe korte
   };*/
   const deployContract = () => {
-    console.log(code); 
+    console.log(code);
   };
-
-
-
-
-
-
 
   // const handleDownloadHardhat = async () => {
   //   setCurrentStep(0);
@@ -267,38 +263,57 @@ function EditorPage() {
 
   async function handleDownloadHardhat() {
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      const userAddress = accounts[0]; // MetaMask address
-      console.log(userAddress)
+      console.log(code)
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      const userAddress = accounts[0];
+      console.log(userAddress);
       const { data } = await instance.post("/process_link", {
-        solCode: solidityCode,
-        meta_id: userAddress,
+        solCode: code,
+        meta_id: `project${userAddress}`,
       });
 
       if (data.success) {
         alert("Brownie Project Initiated");
         // Step 2: Trigger compilation process
-        const compileResponse = await instance.post(
-          "/compile",
-          {
-            contract_name: "example",
-            meta_acc: userAddress,
-          },
-          {
-            responseType: "application/json", // Important to handle binary data
-          }
-        );
+        const compileResponse = async () =>
+          await instance
+            .post(
+              "/compile",
+              {
+                contract_name: "contract.sol",
+                meta_acc: `project${userAddress}`,
+              },
+              {
+                responseType: "application/json", // Important to handle binary data
+              }
+            )
+            .then((data) => {
+              alert("compiled successfully, baby!");
+              const deployContract = async () =>
+                await instance
+                  .post(
+                    "/deploy",
+                    {
+                      meta_acc: `project${userAddress}`,
+                    },
+                    {
+                      responseType: "application/json", // Important to handle binary data
+                    }
+                  )
+                  .then((data) => {
+                    if (data.success) {
+                      alert(`contract deployed at ${data.deployment_address}`);
+                    }
+                  });
+            });
 
         // Step 3: Save the zip file
         // const blob = new Blob([compileResponse.data], {
         //   type: "application/zip",
         // });
         // saveAs(blob, `${user_id}.zip`);
-        if (compileResponse.data.status) {
-          alert("compilation success", compileResponse.data.abi);
-
-          console.log(compileResponse.data.abi);
-        }
       }
     } catch (err) {
       console.error(err);

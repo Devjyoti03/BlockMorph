@@ -12,6 +12,10 @@ from test_contract import test_contract
 from scan_contract import scan_contract
 from deploy_contract import deploy_contract
 from get_options import process_url
+from generate_docs import generate_documentation
+
+
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -94,7 +98,6 @@ def getOptions():
     except Exception as e:
         return jsonify({'success':False})
 
-
 @app.route('/process_link', methods=['POST'])
 def process_link():
     solidity_code = request.json.get('solCode')
@@ -118,9 +121,27 @@ def process_link():
         os.makedirs(contracts_dir, exist_ok=True)
 
         # Save the Solidity code to a .sol file
-        solidity_file_path = os.path.join(contracts_dir, 'MyContract.sol')
+        solidity_file_path = os.path.join(contracts_dir, 'contract.sol')
         with open(solidity_file_path, 'w') as solidity_file:
             solidity_file.write(solidity_code)
+
+        # Create the brownie-config.yaml file in the project directory
+        brownie_config_path = os.path.join(user_dir, 'brownie-config.yaml')
+        with open(brownie_config_path, 'w') as config_file:
+            config_file.write('''\
+networks:
+    polygon-amoy:
+        network: 'polygon-amoy'
+        chainid: 80002
+        host: 'https://rpc-amoy.polygon.technology/'
+        explorer:
+            api_key: 'YOUR_POLYGONSCAN_API_KEY'
+        gas_price: 'auto'
+wallets:
+    from_key: ${PRIVATE_KEY}
+dependencies:
+    - smartcontractkit/chainlink-brownie-contracts@1.1.1
+''')
 
         return jsonify({"success": True, "user_id": user_id, "message": "Solidity code file saved and Brownie project initialized successfully."})
 
@@ -128,7 +149,6 @@ def process_link():
         return jsonify({"success": False, "message": "Failed to initialize Brownie project.", "details": str(e)}), 500
     except Exception as e:
         return jsonify({"success": False, "message": "An error occurred.", "details": str(e)}), 500
-
 
 
 
@@ -150,13 +170,37 @@ def scan():
     return jsonify({"message": "Security scan complete.", "scan_results": scan_results})
 
 @app.route('/deploy', methods=['POST'])
-# this will deploy the compiled brownie project
 def deploy():
-    user_id = request.json['user_id']
-    user_dir = os.path.join(SESSION_DIR, user_id)
+    user_id = request.json['meta_id']
+    user_dir = os.path.join(PROJECT_DIR, user_id)
+    
+    private_key = os.getenv('PRIVATE_KEY')
+    # Set the private key as an environment variable
+    env = os.environ.copy()
+    
+    env['PRIVATE_KEY'] = private_key
 
-    deployment_address = deploy_contract(user_dir)
-    return jsonify({"message": "Deployment successful.", "deployment_address": deployment_address})
+    try:
+        # Run the Brownie deploy script with the environment variable
+        result = subprocess.run(['brownie', 'run', 'scripts/deploy.py', '--network', 'amoy'],
+                                cwd=user_dir, capture_output=True, text=True, check=True, env=env)
+
+        # Extract the deployment address from the result
+        deployment_address = None
+        for line in result.stdout.splitlines():
+            if "Contract deployed at address:" in line:
+                deployment_address = line.split(": ")[1].strip()
+                break
+
+        if deployment_address:
+            return jsonify({"success":True,"message": "Deployment successful.", "deployment_address": deployment_address})
+        else:
+            return jsonify({"success":False,"message": "Deployment failed.", "details": result.stdout}), 500
+
+    except subprocess.CalledProcessError as e:
+        return jsonify({"message": "Deployment failed.", "details": e.stdout}), 500
+    except Exception as e:
+        return jsonify({"message": "An error occurred.", "details": str(e)}), 500
 
 @app.route('/download/<user_id>', methods=['GET'])
 def download(user_id):
@@ -167,5 +211,24 @@ def download(user_id):
     shutil.make_archive(zip_filepath.replace('.zip', ''), 'zip', user_dir)
     return send_file(zip_filepath, as_attachment=True)
 
+@app.route('/generate', methods=['POST'])
+def generate_response():
+    if not request.is_json:
+        return jsonify({"error": "Request must be JSON"}), 400
+
+    data = request.get_json()
+    if 'language' not in data or 'code' not in data:
+        return jsonify({"error": "'language' and 'code' keys are required in the JSON request"}), 400
+    
+    language = data['language']
+    demo_code = data['code']
+    
+    try:
+        response_data = generate_documentation(demo_code, language)
+        return jsonify(response_data)
+    
+    except ValueError as e:
+        return jsonify({"error": str(e)}), 500
+       
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
