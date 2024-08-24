@@ -21,6 +21,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 // import { instance } from "../../config/axios";
 import { encode } from "base-64";
+import Markdown from "react-markdown"
 import axios from "axios";
 // import { db } from "../../config/firebase";
 // import { AppContext } from "../../context/AppContext";
@@ -111,6 +112,9 @@ function EditorPage() {
       const result = await model.generateContent(prompt);
       const response = await result.response;
       let generatedCode = await response.text();
+      if(generatedCode.charAt(0)==="`"){
+        generatedCode=generatedCode.substring(11,generatedCode.length-3);
+      }
       generatedCode = "// SPDX-License-Identifier: MIT\n" + generatedCode;
       setSolidityCode(generatedCode);
 
@@ -260,6 +264,48 @@ function EditorPage() {
   //   setIsModalOpen(false);
   //   window.location.href = "/doc";
   // };
+
+  const onLeftClick = async () => {
+    // try {
+    //   const genAI = new GoogleGenerativeAI(
+    //     "AIzaSyD4UE6-0QdB1QCtxXE-1k7EQv-3VHQJP1Q"
+    //   );
+    //   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    //   const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}.  Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
+    //   const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.  `;
+
+    //   const result = await model.generateContent(prompt);
+    //   const response = await result.response;
+    //   let generatedCode = await response.text();
+    //   if(generatedCode.charAt(0)==="`"){
+    //     generatedCode=generatedCode.substring(11,generatedCode.length-3);
+    //   }
+    //   generatedCode = "// SPDX-License-Identifier: MIT\n" + generatedCode;
+    //   setSolidityCode(generatedCode);
+
+    //   setCode(generatedCode);
+
+    //   // Prompt to generate a summary of the generated Solidity code
+    //   const summaryPrompt = `Summarize the key features and functions of the following Solidity smart contract code in a concise manner. Code: ${generatedCode}`;
+    //   const summaryResult = await model.generateContent(summaryPrompt);
+    //   const summaryResponse = await summaryResult.response;
+    //   const generatedSummary = await summaryResponse.text();
+
+    //   setSummary(generatedSummary);
+    //   setContractName("YourContractName");
+
+      if (tabsLayout[0] === 25) {
+        setTabsLayout([5, 65, 30]);
+        setIsDisabled(false);
+      } else if (tabsLayout[0] === 5) {
+        setTabsLayout([25, 45, 30]);
+        setIsDisabled(true);
+      }
+    // } catch (error) {
+    //   console.error("Error generating Solidity code: ", error);
+    };
+  
 
   async function handleDownloadHardhat() {
     try {
@@ -458,7 +504,7 @@ function EditorPage() {
             ) : (
               <Box mt={1}>
                 <Button
-                  // onClick={onTabClick}
+                  onClick={onLeftClick}
                   sx={{
                     borderRadius: 1,
                     background: `var(--brand-mix, conic-gradient(
@@ -490,7 +536,8 @@ function EditorPage() {
                     // add on hover
                   }}
                 >
-                  <MdArrowForwardIos color="#fff" />
+                  <MdArrowForwardIos color="#000" size={24} />
+
                 </Button>
               </Box>
             )}
@@ -630,16 +677,12 @@ function EditorPage() {
                 overflow: "auto",
               }}
             >
-              <Typography fontSize={18} fontWeight="600">
+              <Typography fontSize={25} fontWeight="600" sx={{textDecoration:"underline"}}>
                 Contract Summary
               </Typography>
               <Typography fontSize={13}>
-                {summary ||
-                  "Generated Solidity contract based on provided features and additional requirements."}
-              </Typography>
-              <Typography fontSize={13}>
-                {summary ||
-                  "Generated Solidity contract based on provided features and additional requirements.lorem ipsum kebla bhabla"}
+                <Markdown>{summary ||
+                  "Generated Solidity contract based on provided features and additional requirements."}</Markdown>
               </Typography>
             </Box>
             <Modal

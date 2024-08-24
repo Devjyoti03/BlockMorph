@@ -60,6 +60,7 @@ const gradientAnimation = keyframes`
 `;
 
 function Home() {
+  const [x, setX] = useState(10);
   const isSmallScreen = useMediaQuery("(max-width:1000px)");
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -102,6 +103,9 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   const handleMagicButtonClick = async () => {
+    if (x > 0) {
+      setX(x - 1);
+    }
     setLoading(true);
     try {
       if (isTest) {
@@ -311,7 +315,7 @@ function Home() {
                   },
                 }}
               >
-                in the smoothest way possible!
+                in a Single Click!!!
               </Typography>
             </motion.div>
           </Box>
@@ -359,11 +363,24 @@ function Home() {
               alignItems: "center",
               flexDirection: "column",
               width: "100%",
-              height: "32rem",
+              height: "35rem",
               borderRadius: "2rem",
               transition: "opacity 1s ease-in-out", // Add a smooth transition effect
             }}
           >
+            <Box sx={{ display: "flex" }} mr={1}>
+              <Typography variant="h4" className="text-gradient-2">
+                Remaining Credit Balance: {x}
+              </Typography>
+              <img
+                src="bc.svg"
+                alt="text"
+                style={{
+                  display: "block",
+                  width: "2rem",
+                }}
+              />
+            </Box>
             <LinkInput
               id="dynamicInput"
               defaultValue={isTest ? inputLink : "www."}
@@ -397,7 +414,7 @@ function Home() {
                     return (
                       <Step key={id}>
                         <StepLabel color="white">
-                          <Typography variant="h6" color="white">
+                          <Typography variant="body1" color="white">
                             {text}
                           </Typography>
                         </StepLabel>
@@ -416,11 +433,23 @@ function Home() {
                 >
                   <GradientButton
                     icon={<FaMagic />}
-                    text="Start the Magic!"
+                    text="Start the Magic..."
                     onClick={handleMagicButtonClick}
                     disabled={loading}
                   />
-
+                  <Box sx={{ display: "flex" }} mt={1}>
+                    <img
+                      src="bc.svg"
+                      alt="text"
+                      style={{
+                        display: "block",
+                        width: "1.4rem",
+                      }}
+                    />
+                    <Typography variant="body2" fontSize={14} px={1}>
+                      1 Credit
+                    </Typography>
+                  </Box>
                   <Box
                     sx={{
                       display: "flex",
