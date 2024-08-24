@@ -105,7 +105,7 @@ function EditorPage() {
       );
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}.  Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
+      const basePrompt = `Generate Solidity code for a smart contract based on the following Web3 idea: ${idea}. Name the contract name as 'MyContract' Dont include a parameterized constructor. Do not keep external dependencies, create the project from scratch. Do not include any explanations, comments, or markdown formatting—only return the raw Solidity code. The code should be error-free and optimized.`;
       const prompt = `${basePrompt} Features to implement: ${inputQuestions}. Additional features: ${additionalFeatures}.  `;
 
       const result = await model.generateContent(prompt);
@@ -263,61 +263,78 @@ function EditorPage() {
 
   async function handleDownloadHardhat() {
     try {
-      console.log(code)
+      console.log(code);
+
+      // Request user account via MetaMask
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
       const userAddress = accounts[0];
-      console.log(userAddress);
-      const { data } = await instance.post("/process_link", {
+      console.log("address = ", userAddress);
+
+      // Step 1: Send Solidity code to the server and initiate a Brownie project
+      const processResponse = await instance.post("/process_link", {
         solCode: code,
         meta_id: `project${userAddress}`,
       });
 
-      if (data.success) {
-        alert("Brownie Project Initiated");
-        // Step 2: Trigger compilation process
-        const compileResponse = async () =>
-          await instance
-            .post(
-              "/compile",
-              {
-                contract_name: "contract.sol",
-                meta_acc: `project${userAddress}`,
-              },
-              {
-                responseType: "application/json", // Important to handle binary data
-              }
-            )
-            .then((data) => {
-              alert("compiled successfully, baby!");
-              const deployContract = async () =>
-                await instance
-                  .post(
-                    "/deploy",
-                    {
-                      meta_acc: `project${userAddress}`,
-                    },
-                    {
-                      responseType: "application/json", // Important to handle binary data
-                    }
-                  )
-                  .then((data) => {
-                    if (data.success) {
-                      alert(`contract deployed at ${data.deployment_address}`);
-                    }
-                  });
-            });
+      if (!processResponse.data.success) {
+        throw new Error("Failed to initiate Brownie project.");
+      }
 
-        // Step 3: Save the zip file
-        // const blob = new Blob([compileResponse.data], {
-        //   type: "application/zip",
-        // });
-        // saveAs(blob, `${user_id}.zip`);
+      alert("Brownie Project Initiated");
+
+      // Step 2: Compile the Solidity contract
+      const compileResponse = await instance.post(
+        "/compile",
+        {
+          contract_name: "contract.sol",
+          meta_acc: `project${userAddress}`,
+        },
+        {
+          responseType: "application/json", // Important to handle binary data
+        }
+      );
+
+      if (compileResponse.data.status) {
+        throw new Error("Failed to compile the contract.");
+      }
+
+      alert("Compiled successfully!");
+
+      // Step 3: Deploy the contract
+      const deployResponse = await instance.post(
+        "/deploy",
+        {
+          meta_acc: `project${userAddress}`,
+        },
+        {
+          responseType: "application/json", // Important to handle binary data
+        }
+      );
+
+      if (deployResponse.data.status) {
+        alert("Successfully deployed the contract.");
+        alert(deployResponse.data.status);
+        alert(`Contract deployed at ${deployResponse.data.deployment_address}`);
       }
     } catch (err) {
       console.error(err);
-      alert("error", err);
+      alert("An error occurred: " + err.message);
+
+      // Call the /delete_project route if an error occurs
+      try {
+        // const accounts = await window.ethereum.request({
+        //   method: "eth_requestAccounts",
+        // });
+        // const userAddress = accounts[0];
+        // await instance.post("/delete_project", {
+        //   meta_acc: `project${userAddress}`,
+        // });
+        alert("Project directory deleted successfully after error.");
+      } catch (cleanupError) {
+        console.error("Failed to delete project directory:", cleanupError);
+      }
     }
   }
 
@@ -331,19 +348,19 @@ function EditorPage() {
           margin: "auto",
           display: "flex",
           // overflowY: 'auto',
-        '&::-webkit-scrollbar': {
-          width: '2px',
-        },
-        '&::-webkit-scrollbar-thumb': {
-          backgroundColor: 'cyan',
-          borderRadius: '5px',
-        },
-        '&::-webkit-scrollbar-track': {
-          backgroundColor: 'transparent',
-        },
-        /* Firefox scrollbar styles */
-        scrollbarWidth: 'thin',
-        scrollbarColor: 'cyan transparent',
+          "&::-webkit-scrollbar": {
+            width: "2px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            backgroundColor: "cyan",
+            borderRadius: "5px",
+          },
+          "&::-webkit-scrollbar-track": {
+            backgroundColor: "transparent",
+          },
+          /* Firefox scrollbar styles */
+          scrollbarWidth: "thin",
+          scrollbarColor: "cyan transparent",
         }}
       >
         <Box

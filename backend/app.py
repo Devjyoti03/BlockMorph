@@ -36,6 +36,34 @@ CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 # print(BASE_DIR)
+
+
+
+@app.route('/delete_project', methods=['POST'])
+def delete_project():
+    user_id = request.json.get('user_id')
+    
+    if not user_id:
+        return jsonify({"success": False, "message": "User ID is missing."}), 400
+    
+    # Define the user directory based on the user_id
+    user_dir = os.path.join(PROJECT_DIR, user_id)
+    
+    try:
+        # Check if the directory exists
+        if not os.path.exists(user_dir):
+            return jsonify({"success": False, "message": "Project directory not found."}), 404
+        
+        # Delete the directory and all its contents
+        shutil.rmtree(user_dir)
+        
+        return jsonify({"success": True, "message": f"Project '{user_id}' deleted successfully."})
+    
+    except Exception as e:
+        return jsonify({"success": False, "message": "An error occurred.", "details": str(e)}), 500
+
+
+
 @app.route('/compile', methods=['POST'])
 def compile_contract():
     data = request.json
@@ -75,8 +103,10 @@ def compile_contract():
         # Extract the ABI
         abi = build_data.get('abi', [])
         print(abi)
+        print("compilation successful")
         # Return success message and the ABI of the compiled contract
         return jsonify({
+            "success":True,
             'status': True,
             'message': 'Compilation successful',
             'abi': abi
@@ -121,27 +151,54 @@ def process_link():
         os.makedirs(contracts_dir, exist_ok=True)
 
         # Save the Solidity code to a .sol file
-        solidity_file_path = os.path.join(contracts_dir, 'contract.sol')
+        solidity_file_path = os.path.join(contracts_dir, 'MyContract.sol')
         with open(solidity_file_path, 'w') as solidity_file:
             solidity_file.write(solidity_code)
 
+        deploy_file_path = os.path.join(user_dir, "scripts")
+
+        
+        with open(f'{deploy_file_path}/deploy.py', "w") as deploy_file:
+            deploy_file.write('''\
+from brownie import MyContract, accounts, network, config
+
+def get_account():
+    # Load the account from the private key specified in the config file
+    if network.show_active() in config["networks"]:
+        return accounts.add(config["wallets"]["from_key"])
+    else:
+        return accounts[0]  # Fallback to a default account if no config is found
+
+def main():
+    account = get_account()
+    
+    # Deploy the contract
+    deployed_contract = MyContract.deploy({"from": account})
+
+    # Print the address of the deployed contract
+    print(f"Contract deployed at address: {deployed_contract.address}")
+    return deployed_contract.address
+''')
         # Create the brownie-config.yaml file in the project directory
         brownie_config_path = os.path.join(user_dir, 'brownie-config.yaml')
         with open(brownie_config_path, 'w') as config_file:
             config_file.write('''\
 networks:
-    polygon-amoy:
-        network: 'polygon-amoy'
-        chainid: 80002
-        host: 'https://rpc-amoy.polygon.technology/'
-        explorer:
-            api_key: 'YOUR_POLYGONSCAN_API_KEY'
-        gas_price: 'auto'
+  default: avax-test
+  amoy:
+    host: https://rpc-amoy.polygon.technology/
+    chainid: 80002
+    explorer: https://amoy.polygonscan.com/
+    name: Polygon Amoy Testnet
+  avax-test:
+    host: https://api.avax-test.network/ext/bc/C/rpc
+    chainid: 43113
+    explorer: https://testnet.snowtrace.io/
+    name: Avalanche Fuji C-Chain Testnet
 wallets:
-    from_key: ${PRIVATE_KEY}
-dependencies:
-    - smartcontractkit/chainlink-brownie-contracts@1.1.1
+  from_key: "enter the acc pvt key here"
 ''')
+
 
         return jsonify({"success": True, "user_id": user_id, "message": "Solidity code file saved and Brownie project initialized successfully."})
 
@@ -171,19 +228,21 @@ def scan():
 
 @app.route('/deploy', methods=['POST'])
 def deploy():
-    user_id = request.json['meta_id']
+    user_id = request.json['meta_acc']
     user_dir = os.path.join(PROJECT_DIR, user_id)
     
-    private_key = os.getenv('PRIVATE_KEY')
-    # Set the private key as an environment variable
-    env = os.environ.copy()
-    
-    env['PRIVATE_KEY'] = private_key
+   
 
     try:
         # Run the Brownie deploy script with the environment variable
-        result = subprocess.run(['brownie', 'run', 'scripts/deploy.py', '--network', 'amoy'],
-                                cwd=user_dir, capture_output=True, text=True, check=True, env=env)
+        result = subprocess.run(
+            ['brownie', 'run', 'scripts/deploy.py'],
+            cwd=user_dir,
+            capture_output=True,
+            text=True,
+            check=True,
+            
+        )
 
         # Extract the deployment address from the result
         deployment_address = None
@@ -193,7 +252,10 @@ def deploy():
                 break
 
         if deployment_address:
-            return jsonify({"success":True,"message": "Deployment successful.", "deployment_address": deployment_address})
+            print("successfully deployed at: ", deployment_address)
+            return jsonify({
+            "status": True,
+            "deployment_address": deployment_address})
         else:
             return jsonify({"success":False,"message": "Deployment failed.", "details": result.stdout}), 500
 

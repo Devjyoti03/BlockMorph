@@ -26,7 +26,7 @@ def deploy_contract(user_dir):
         # Extract the deployment address from the result
         output = result.stdout
         deployment_address = extract_deployment_address(output)
-        
+        print("successfully deployed : ", deployment_address)
         return deployment_address
     except subprocess.CalledProcessError as e:
         print(f"Deployment failed: {e.output}")
