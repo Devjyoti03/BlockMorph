@@ -254,7 +254,7 @@ function Doc() {
         selectedFunction?.description
       }
         ${selectedFunction?.[language]}
-      }
+      ${toggle==2?'':'}'}
         `;
       stringOfID3+=toggle===2?`# ${response[toggle]?.other}`:``;
 
