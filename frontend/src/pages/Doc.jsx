@@ -456,10 +456,13 @@ const StyledTypography = styled(Typography)(({ theme }) => ({
     to={"#" + text.replace(/\s+/g, "-").toLowerCase()}
     className="link-wrapper" // Add a class for additional styling if needed
   >
-    <StyledListItem className="gradient-bg-footer sidebar">
+    <StyledListItem className="gradient-bg-footer" sx={{ textDecoration: 'none' }}>
       <StyledTypography
         variant="body1"
         fontWeight={500}
+        sx={{ textDecoration: 'none',
+        '&:hover': {
+          textDecoration: 'none', }}}
       >
         {text}
       </StyledTypography>
